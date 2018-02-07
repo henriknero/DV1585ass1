@@ -39,6 +39,13 @@
 
 #ifndef YY_YY_INTERPRETER_TAB_HH_INCLUDED
 # define YY_YY_INTERPRETER_TAB_HH_INCLUDED
+// //                    "%code requires" blocks.
+#line 5 "interpreter.yy" // lalr1.cc:377
+
+	#include "Node.hh"
+	#include <string>
+
+#line 49 "interpreter.tab.hh" // lalr1.cc:377
 
 
 # include <cstdlib> // std::abort
@@ -115,7 +122,7 @@
 
 
 namespace yy {
-#line 119 "interpreter.tab.hh" // lalr1.cc:377
+#line 126 "interpreter.tab.hh" // lalr1.cc:377
 
 
 
@@ -262,14 +269,23 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // stream
+      // optline
+      // line
+      // operator
+      // spaceeater
+      // optspace
+      // anything
+      char dummy1[sizeof(Node)];
+
       // VAR
       // BLANK
+      // NL
       // NUMERIC
       // OP
       // LEFT_PARA
       // RIGHT_PARA
-      // line
-      char dummy1[sizeof(std::string)];
+      char dummy2[sizeof(std::string)];
 };
 
     /// Symbol semantic values.
@@ -292,10 +308,11 @@ namespace yy {
         END = 0,
         VAR = 258,
         BLANK = 259,
-        NUMERIC = 260,
-        OP = 261,
-        LEFT_PARA = 262,
-        RIGHT_PARA = 263
+        NL = 260,
+        NUMERIC = 261,
+        OP = 262,
+        LEFT_PARA = 263,
+        RIGHT_PARA = 264
       };
     };
 
@@ -332,6 +349,8 @@ namespace yy {
       /// Constructor for valueless symbols, and symbols from each type.
 
   basic_symbol (typename Base::kind_type t);
+
+  basic_symbol (typename Base::kind_type t, const Node v);
 
   basic_symbol (typename Base::kind_type t, const std::string v);
 
@@ -409,6 +428,10 @@ namespace yy {
     static inline
     symbol_type
     make_BLANK (const std::string& v);
+
+    static inline
+    symbol_type
+    make_NL (const std::string& v);
 
     static inline
     symbol_type
@@ -508,7 +531,7 @@ namespace yy {
   // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
   // positive, shift that token.  If negative, reduce the rule whose
   // number is the opposite.  If YYTABLE_NINF, syntax error.
-  static const unsigned char yytable_[];
+  static const signed char yytable_[];
 
   static const signed char yycheck_[];
 
@@ -627,12 +650,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 8,     ///< Last index in yytable_.
-      yynnts_ = 2,  ///< Number of nonterminal symbols.
-      yyfinal_ = 2, ///< Termination state number.
+      yylast_ = 21,     ///< Last index in yytable_.
+      yynnts_ = 8,  ///< Number of nonterminal symbols.
+      yyfinal_ = 8, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 9  ///< Number of tokens.
+      yyntokens_ = 10  ///< Number of tokens.
     };
 
 
@@ -673,9 +696,9 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8
+       5,     6,     7,     8,     9
     };
-    const unsigned int user_token_number_max_ = 263;
+    const unsigned int user_token_number_max_ = 264;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -706,13 +729,23 @@ namespace yy {
   {
       switch (other.type_get ())
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.copy< Node > (other.value);
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.copy< std::string > (other.value);
         break;
 
@@ -732,13 +765,23 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.copy< Node > (v);
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.copy< std::string > (v);
         break;
 
@@ -754,6 +797,12 @@ namespace yy {
   parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t)
     : Base (t)
     , value ()
+  {}
+
+  template <typename Base>
+  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const Node v)
+    : Base (t)
+    , value (v)
   {}
 
   template <typename Base>
@@ -788,13 +837,23 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.template destroy< Node > ();
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.template destroy< std::string > ();
         break;
 
@@ -821,13 +880,23 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.move< Node > (s.value);
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.move< std::string > (s.value);
         break;
 
@@ -885,7 +954,7 @@ namespace yy {
     const unsigned short int
     yytoken_number_[] =
     {
-       0,   256,   257,   258,   259,   260,   261,   262,   263
+       0,   256,   257,   258,   259,   260,   261,   262,   263,   264
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -906,6 +975,12 @@ namespace yy {
   parser::make_BLANK (const std::string& v)
   {
     return symbol_type (token::BLANK, v);
+  }
+
+  parser::symbol_type
+  parser::make_NL (const std::string& v)
+  {
+    return symbol_type (token::NL, v);
   }
 
   parser::symbol_type
@@ -935,7 +1010,7 @@ namespace yy {
 
 
 } // yy
-#line 939 "interpreter.tab.hh" // lalr1.cc:377
+#line 1014 "interpreter.tab.hh" // lalr1.cc:377
 
 
 

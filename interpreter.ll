@@ -6,7 +6,8 @@
 %%
 [+*/%<>\-\^]|<=|>=|==|~=|and|or|\.\.|#|not 	{return yy::parser::make_OP(yytext);}
 [a-zA-Z_][a-zA-Z0-9_]*						{return yy::parser::make_VAR(yytext);}
-[ \t\n]*									{return yy::parser::make_BLANK(yytext);}	
+[ \t]*										{return yy::parser::make_BLANK(yytext);}	
+[\n]*										{return yy::parser::make_NL(yytext);}	
 [0-9]+										{return yy::parser::make_NUMERIC(yytext);}
 [(]											{return yy::parser::make_LEFT_PARA(yytext);}	
 [)]											{return yy::parser::make_RIGHT_PARA(yytext);}

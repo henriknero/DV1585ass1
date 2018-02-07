@@ -49,12 +49,12 @@
 
 #line 51 "interpreter.tab.cc" // lalr1.cc:412
 // Unqualified %code blocks.
-#line 5 "interpreter.yy" // lalr1.cc:413
+#line 9 "interpreter.yy" // lalr1.cc:413
 
-  #include <string>
-  std::string output = "";
-  #define YY_DECL yy::parser::symbol_type yylex()
-  YY_DECL;
+	Node root;
+	int id = 0;
+	#define YY_DECL yy::parser::symbol_type yylex()
+	YY_DECL;
 
 #line 60 "interpreter.tab.cc" // lalr1.cc:413
 
@@ -195,13 +195,23 @@ namespace yy {
   {
       switch (that.type_get ())
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.move< Node > (that.value);
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.move< std::string > (that.value);
         break;
 
@@ -220,13 +230,23 @@ namespace yy {
     state = that.state;
       switch (that.type_get ())
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        value.copy< Node > (that.value);
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         value.copy< std::string > (that.value);
         break;
 
@@ -453,13 +473,23 @@ namespace yy {
          when using variants.  */
         switch (yyr1_[yyn])
     {
+      case 11: // stream
+      case 12: // optline
+      case 13: // line
+      case 14: // operator
+      case 15: // spaceeater
+      case 16: // optspace
+      case 17: // anything
+        yylhs.value.build< Node > ();
+        break;
+
       case 3: // VAR
       case 4: // BLANK
-      case 5: // NUMERIC
-      case 6: // OP
-      case 7: // LEFT_PARA
-      case 8: // RIGHT_PARA
-      case 10: // line
+      case 5: // NL
+      case 6: // NUMERIC
+      case 7: // OP
+      case 8: // LEFT_PARA
+      case 9: // RIGHT_PARA
         yylhs.value.build< std::string > ();
         break;
 
@@ -475,38 +505,99 @@ namespace yy {
         {
           switch (yyn)
             {
+  case 2:
+#line 32 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > ()= yystack_[0].value.as< Node > ();
+                        root = yylhs.value.as< Node > ();
+                        }
+#line 514 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 3:
+#line 35 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[2].value.as< Node > ();
+                                yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());
+                                root = yylhs.value.as< Node > ();
+                                }
+#line 523 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
   case 4:
-#line 22 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "VAR: " << yystack_[0].value.as< std::string > () << std::endl;}
-#line 482 "interpreter.tab.cc" // lalr1.cc:859
+#line 41 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("emptyline","",id++);}
+#line 529 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 5:
-#line 23 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "NUMERIC: " << yystack_[0].value.as< std::string > () << std::endl;}
-#line 488 "interpreter.tab.cc" // lalr1.cc:859
+#line 42 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
+#line 535 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 6:
-#line 24 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "OP: " << yystack_[0].value.as< std::string > () << std::endl;}
-#line 494 "interpreter.tab.cc" // lalr1.cc:859
+#line 45 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
+#line 541 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 7:
-#line 25 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "LEFT_PARA: " << yystack_[0].value.as< std::string > () << std::endl;}
-#line 500 "interpreter.tab.cc" // lalr1.cc:859
+#line 46 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[1].value.as< Node > (); yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
+#line 547 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 8:
-#line 26 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "RIGHT_PARA: " << yystack_[0].value.as< std::string > () << std::endl;}
-#line 506 "interpreter.tab.cc" // lalr1.cc:859
+#line 48 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
+#line 553 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 9:
+#line 49 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("OP",yystack_[1].value.as< std::string > (),id++); 
+									yylhs.value.as< Node > ().children.push_back(yystack_[2].value.as< Node > ()); 
+									yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
+#line 561 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 10:
+#line 53 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[1].value.as< Node > ();}
+#line 567 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 11:
+#line 56 "interpreter.yy" // lalr1.cc:859
+    {}
+#line 573 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 12:
+#line 57 "interpreter.yy" // lalr1.cc:859
+    {}
+#line 579 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 14:
+#line 61 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("VAR ",yystack_[0].value.as< std::string > (),id++);}
+#line 585 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 15:
+#line 62 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("NUMERIC ",yystack_[0].value.as< std::string > (),id++);}
+#line 591 "interpreter.tab.cc" // lalr1.cc:859
+    break;
+
+  case 16:
+#line 63 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("EXPRES","",id++); yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
+#line 597 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
 
-#line 510 "interpreter.tab.cc" // lalr1.cc:859
+#line 601 "interpreter.tab.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -667,62 +758,74 @@ namespace yy {
   }
 
 
-  const signed char parser::yypact_ninf_ = -1;
+  const signed char parser::yypact_ninf_ = -6;
 
-  const signed char parser::yytable_ninf_ = -1;
+  const signed char parser::yytable_ninf_ = -6;
 
   const signed char
   parser::yypact_[] =
   {
-      -1,     0,    -1,    -1,    -1,    -1,    -1,    -1,    -1
+       1,    -6,     4,    -6,     3,    -5,    -6,     7,    -6,     1,
+      -5,    12,    -6,    -6,    12,    12,    -6,    -6,     8,    -6,
+      -6
   };
 
   const unsigned char
   parser::yydefact_[] =
   {
-       2,     0,     1,     4,     3,     5,     6,     7,     8
+      11,    12,     0,     2,    11,     6,     8,    13,     1,    11,
+       7,    11,    14,    15,    11,    11,     3,     9,    11,    10,
+      16
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -1,    -1
+      -6,    -6,     2,     5,    -4,     9,     6,    -6
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-      -1,     1
+      -1,     2,     3,     4,     5,     6,     7,    15
   };
 
-  const unsigned char
+  const signed char
   parser::yytable_[] =
   {
-       2,     0,     0,     3,     4,     5,     6,     7,     8
+      10,    -4,    11,    -5,     8,     1,    -4,     1,    -5,     9,
+      12,    16,     1,    13,    10,    14,     1,    20,     0,    18,
+      17,    19
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       0,    -1,    -1,     3,     4,     5,     6,     7,     8
+       4,     0,     7,     0,     0,     4,     5,     4,     5,     5,
+       3,     9,     4,     6,    18,     8,     4,     9,    -1,    14,
+      11,    15
   };
 
   const unsigned char
   parser::yystos_[] =
   {
-       0,    10,     0,     3,     4,     5,     6,     7,     8
+       0,     4,    11,    12,    13,    14,    15,    16,     0,     5,
+      14,     7,     3,     6,     8,    17,    12,    15,    13,    16,
+       9
   };
 
   const unsigned char
   parser::yyr1_[] =
   {
-       0,     9,    10,    10,    10,    10,    10,    10,    10
+       0,    10,    11,    11,    12,    12,    13,    13,    14,    14,
+      15,    16,    16,    17,    17,    17,    17
   };
 
   const unsigned char
   parser::yyr2_[] =
   {
-       0,     2,     0,     2,     2,     2,     2,     2,     2
+       0,     2,     1,     3,     0,     1,     1,     2,     1,     3,
+       3,     0,     1,     0,     1,     1,     3
   };
 
 
@@ -732,15 +835,17 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "$undefined", "VAR", "BLANK", "NUMERIC",
-  "OP", "LEFT_PARA", "RIGHT_PARA", "$accept", "line", YY_NULLPTR
+  "\"end of file\"", "error", "$undefined", "VAR", "BLANK", "NL",
+  "NUMERIC", "OP", "LEFT_PARA", "RIGHT_PARA", "$accept", "stream",
+  "optline", "line", "operator", "spaceeater", "optspace", "anything", YY_NULLPTR
   };
 
 
   const unsigned char
   parser::yyrline_[] =
   {
-       0,    20,    20,    21,    22,    23,    24,    25,    26
+       0,    32,    32,    35,    41,    42,    45,    46,    48,    49,
+      53,    56,    57,    60,    61,    62,    63
   };
 
   // Print the state stack on the debug stream.
@@ -775,4 +880,4 @@ namespace yy {
 
 
 } // yy
-#line 779 "interpreter.tab.cc" // lalr1.cc:1167
+#line 884 "interpreter.tab.cc" // lalr1.cc:1167
