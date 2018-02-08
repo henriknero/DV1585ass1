@@ -1,0 +1,429 @@
+State 16 conflicts: 1 shift/reduce
+State 21 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: chunk "end of file"
+
+    1 chunk: optline
+    2      | chunk NL optline
+
+    3 optline: %empty
+    4        | line
+
+    5 line: lowop
+    6     | line lowop
+
+    7 lowop: highop
+    8      | lowop LOW_OP highop
+
+    9 highop: raiseop
+   10       | highop HIGH_OP raiseop
+
+   11 raiseop: spaceeater
+   12        | raiseop RAISE spaceeater
+
+   13 spaceeater: optspace anything optspace
+
+   14 optspace: %empty
+   15         | BLANK
+
+   16 anything: VAR
+   17         | NUMERIC
+   18         | STRING
+   19         | LEFT_PARA line RIGHT_PARA
+   20         | VAR LEFT_PARA line RIGHT_PARA
+   21         | EQUALS
+
+
+Terminals, with rules where they appear
+
+"end of file" (0) 0
+error (256)
+VAR (258) 16 20
+BLANK (259) 15
+NL (260) 2
+NUMERIC (261) 17
+RAISE (262) 12
+HIGH_OP (263) 10
+LOW_OP (264) 8
+LEFT_PARA (265) 19 20
+RIGHT_PARA (266) 19 20
+STRING (267) 18
+EQUALS (268) 21
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    on left: 0
+chunk (15)
+    on left: 1 2, on right: 0 2
+optline (16)
+    on left: 3 4, on right: 1 2
+line (17)
+    on left: 5 6, on right: 4 6 19 20
+lowop (18)
+    on left: 7 8, on right: 5 6 8
+highop (19)
+    on left: 9 10, on right: 7 8 10
+raiseop (20)
+    on left: 11 12, on right: 9 10 12
+spaceeater (21)
+    on left: 13, on right: 11 12
+optspace (22)
+    on left: 14 15, on right: 13
+anything (23)
+    on left: 16 17 18 19 20 21, on right: 13
+
+
+State 0
+
+    0 $accept: . chunk "end of file"
+
+    BLANK  shift, and go to state 1
+
+    "end of file"  reduce using rule 3 (optline)
+    NL             reduce using rule 3 (optline)
+    $default       reduce using rule 14 (optspace)
+
+    chunk       go to state 2
+    optline     go to state 3
+    line        go to state 4
+    lowop       go to state 5
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 1
+
+   15 optspace: BLANK .
+
+    $default  reduce using rule 15 (optspace)
+
+
+State 2
+
+    0 $accept: chunk . "end of file"
+    2 chunk: chunk . NL optline
+
+    "end of file"  shift, and go to state 10
+    NL             shift, and go to state 11
+
+
+State 3
+
+    1 chunk: optline .
+
+    $default  reduce using rule 1 (chunk)
+
+
+State 4
+
+    4 optline: line .
+    6 line: line . lowop
+
+    BLANK  shift, and go to state 1
+
+    "end of file"  reduce using rule 4 (optline)
+    NL             reduce using rule 4 (optline)
+    $default       reduce using rule 14 (optspace)
+
+    lowop       go to state 12
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 5
+
+    5 line: lowop .
+    8 lowop: lowop . LOW_OP highop
+
+    LOW_OP  shift, and go to state 13
+
+    $default  reduce using rule 5 (line)
+
+
+State 6
+
+    7 lowop: highop .
+   10 highop: highop . HIGH_OP raiseop
+
+    HIGH_OP  shift, and go to state 14
+
+    $default  reduce using rule 7 (lowop)
+
+
+State 7
+
+    9 highop: raiseop .
+   12 raiseop: raiseop . RAISE spaceeater
+
+    RAISE  shift, and go to state 15
+
+    $default  reduce using rule 9 (highop)
+
+
+State 8
+
+   11 raiseop: spaceeater .
+
+    $default  reduce using rule 11 (raiseop)
+
+
+State 9
+
+   13 spaceeater: optspace . anything optspace
+
+    VAR        shift, and go to state 16
+    NUMERIC    shift, and go to state 17
+    LEFT_PARA  shift, and go to state 18
+    STRING     shift, and go to state 19
+    EQUALS     shift, and go to state 20
+
+    anything  go to state 21
+
+
+State 10
+
+    0 $accept: chunk "end of file" .
+
+    $default  accept
+
+
+State 11
+
+    2 chunk: chunk NL . optline
+
+    BLANK  shift, and go to state 1
+
+    "end of file"  reduce using rule 3 (optline)
+    NL             reduce using rule 3 (optline)
+    $default       reduce using rule 14 (optspace)
+
+    optline     go to state 22
+    line        go to state 4
+    lowop       go to state 5
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 12
+
+    6 line: line lowop .
+    8 lowop: lowop . LOW_OP highop
+
+    LOW_OP  shift, and go to state 13
+
+    $default  reduce using rule 6 (line)
+
+
+State 13
+
+    8 lowop: lowop LOW_OP . highop
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 14 (optspace)
+
+    highop      go to state 23
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 14
+
+   10 highop: highop HIGH_OP . raiseop
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 14 (optspace)
+
+    raiseop     go to state 24
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 15
+
+   12 raiseop: raiseop RAISE . spaceeater
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 14 (optspace)
+
+    spaceeater  go to state 25
+    optspace    go to state 9
+
+
+State 16
+
+   16 anything: VAR .
+   20         | VAR . LEFT_PARA line RIGHT_PARA
+
+    LEFT_PARA  shift, and go to state 26
+
+    LEFT_PARA  [reduce using rule 16 (anything)]
+    $default   reduce using rule 16 (anything)
+
+
+State 17
+
+   17 anything: NUMERIC .
+
+    $default  reduce using rule 17 (anything)
+
+
+State 18
+
+   19 anything: LEFT_PARA . line RIGHT_PARA
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 14 (optspace)
+
+    line        go to state 27
+    lowop       go to state 5
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 19
+
+   18 anything: STRING .
+
+    $default  reduce using rule 18 (anything)
+
+
+State 20
+
+   21 anything: EQUALS .
+
+    $default  reduce using rule 21 (anything)
+
+
+State 21
+
+   13 spaceeater: optspace anything . optspace
+
+    BLANK  shift, and go to state 1
+
+    BLANK     [reduce using rule 14 (optspace)]
+    $default  reduce using rule 14 (optspace)
+
+    optspace  go to state 28
+
+
+State 22
+
+    2 chunk: chunk NL optline .
+
+    $default  reduce using rule 2 (chunk)
+
+
+State 23
+
+    8 lowop: lowop LOW_OP highop .
+   10 highop: highop . HIGH_OP raiseop
+
+    HIGH_OP  shift, and go to state 14
+
+    $default  reduce using rule 8 (lowop)
+
+
+State 24
+
+   10 highop: highop HIGH_OP raiseop .
+   12 raiseop: raiseop . RAISE spaceeater
+
+    RAISE  shift, and go to state 15
+
+    $default  reduce using rule 10 (highop)
+
+
+State 25
+
+   12 raiseop: raiseop RAISE spaceeater .
+
+    $default  reduce using rule 12 (raiseop)
+
+
+State 26
+
+   20 anything: VAR LEFT_PARA . line RIGHT_PARA
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 14 (optspace)
+
+    line        go to state 29
+    lowop       go to state 5
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 27
+
+    6 line: line . lowop
+   19 anything: LEFT_PARA line . RIGHT_PARA
+
+    BLANK       shift, and go to state 1
+    RIGHT_PARA  shift, and go to state 30
+
+    $default  reduce using rule 14 (optspace)
+
+    lowop       go to state 12
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 28
+
+   13 spaceeater: optspace anything optspace .
+
+    $default  reduce using rule 13 (spaceeater)
+
+
+State 29
+
+    6 line: line . lowop
+   20 anything: VAR LEFT_PARA line . RIGHT_PARA
+
+    BLANK       shift, and go to state 1
+    RIGHT_PARA  shift, and go to state 31
+
+    $default  reduce using rule 14 (optspace)
+
+    lowop       go to state 12
+    highop      go to state 6
+    raiseop     go to state 7
+    spaceeater  go to state 8
+    optspace    go to state 9
+
+
+State 30
+
+   19 anything: LEFT_PARA line RIGHT_PARA .
+
+    $default  reduce using rule 19 (anything)
+
+
+State 31
+
+   20 anything: VAR LEFT_PARA line RIGHT_PARA .
+
+    $default  reduce using rule 20 (anything)

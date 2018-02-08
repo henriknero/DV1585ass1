@@ -269,10 +269,12 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // stream
+      // chunk
       // optline
       // line
-      // operator
+      // lowop
+      // highop
+      // raiseop
       // spaceeater
       // optspace
       // anything
@@ -282,9 +284,13 @@ namespace yy {
       // BLANK
       // NL
       // NUMERIC
-      // OP
+      // RAISE
+      // HIGH_OP
+      // LOW_OP
       // LEFT_PARA
       // RIGHT_PARA
+      // STRING
+      // EQUALS
       char dummy2[sizeof(std::string)];
 };
 
@@ -310,9 +316,13 @@ namespace yy {
         BLANK = 259,
         NL = 260,
         NUMERIC = 261,
-        OP = 262,
-        LEFT_PARA = 263,
-        RIGHT_PARA = 264
+        RAISE = 262,
+        HIGH_OP = 263,
+        LOW_OP = 264,
+        LEFT_PARA = 265,
+        RIGHT_PARA = 266,
+        STRING = 267,
+        EQUALS = 268
       };
     };
 
@@ -439,7 +449,15 @@ namespace yy {
 
     static inline
     symbol_type
-    make_OP (const std::string& v);
+    make_RAISE (const std::string& v);
+
+    static inline
+    symbol_type
+    make_HIGH_OP (const std::string& v);
+
+    static inline
+    symbol_type
+    make_LOW_OP (const std::string& v);
 
     static inline
     symbol_type
@@ -448,6 +466,14 @@ namespace yy {
     static inline
     symbol_type
     make_RIGHT_PARA (const std::string& v);
+
+    static inline
+    symbol_type
+    make_STRING (const std::string& v);
+
+    static inline
+    symbol_type
+    make_EQUALS (const std::string& v);
 
 
     /// Build a parser object.
@@ -650,12 +676,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 21,     ///< Last index in yytable_.
-      yynnts_ = 8,  ///< Number of nonterminal symbols.
-      yyfinal_ = 8, ///< Termination state number.
+      yylast_ = 32,     ///< Last index in yytable_.
+      yynnts_ = 10,  ///< Number of nonterminal symbols.
+      yyfinal_ = 10, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 10  ///< Number of tokens.
+      yyntokens_ = 14  ///< Number of tokens.
     };
 
 
@@ -696,9 +722,9 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9
+       5,     6,     7,     8,     9,    10,    11,    12,    13
     };
-    const unsigned int user_token_number_max_ = 264;
+    const unsigned int user_token_number_max_ = 268;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -729,13 +755,15 @@ namespace yy {
   {
       switch (other.type_get ())
     {
-      case 11: // stream
-      case 12: // optline
-      case 13: // line
-      case 14: // operator
-      case 15: // spaceeater
-      case 16: // optspace
-      case 17: // anything
+      case 15: // chunk
+      case 16: // optline
+      case 17: // line
+      case 18: // lowop
+      case 19: // highop
+      case 20: // raiseop
+      case 21: // spaceeater
+      case 22: // optspace
+      case 23: // anything
         value.copy< Node > (other.value);
         break;
 
@@ -743,9 +771,13 @@ namespace yy {
       case 4: // BLANK
       case 5: // NL
       case 6: // NUMERIC
-      case 7: // OP
-      case 8: // LEFT_PARA
-      case 9: // RIGHT_PARA
+      case 7: // RAISE
+      case 8: // HIGH_OP
+      case 9: // LOW_OP
+      case 10: // LEFT_PARA
+      case 11: // RIGHT_PARA
+      case 12: // STRING
+      case 13: // EQUALS
         value.copy< std::string > (other.value);
         break;
 
@@ -765,13 +797,15 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
-      case 11: // stream
-      case 12: // optline
-      case 13: // line
-      case 14: // operator
-      case 15: // spaceeater
-      case 16: // optspace
-      case 17: // anything
+      case 15: // chunk
+      case 16: // optline
+      case 17: // line
+      case 18: // lowop
+      case 19: // highop
+      case 20: // raiseop
+      case 21: // spaceeater
+      case 22: // optspace
+      case 23: // anything
         value.copy< Node > (v);
         break;
 
@@ -779,9 +813,13 @@ namespace yy {
       case 4: // BLANK
       case 5: // NL
       case 6: // NUMERIC
-      case 7: // OP
-      case 8: // LEFT_PARA
-      case 9: // RIGHT_PARA
+      case 7: // RAISE
+      case 8: // HIGH_OP
+      case 9: // LOW_OP
+      case 10: // LEFT_PARA
+      case 11: // RIGHT_PARA
+      case 12: // STRING
+      case 13: // EQUALS
         value.copy< std::string > (v);
         break;
 
@@ -837,13 +875,15 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
-      case 11: // stream
-      case 12: // optline
-      case 13: // line
-      case 14: // operator
-      case 15: // spaceeater
-      case 16: // optspace
-      case 17: // anything
+      case 15: // chunk
+      case 16: // optline
+      case 17: // line
+      case 18: // lowop
+      case 19: // highop
+      case 20: // raiseop
+      case 21: // spaceeater
+      case 22: // optspace
+      case 23: // anything
         value.template destroy< Node > ();
         break;
 
@@ -851,9 +891,13 @@ namespace yy {
       case 4: // BLANK
       case 5: // NL
       case 6: // NUMERIC
-      case 7: // OP
-      case 8: // LEFT_PARA
-      case 9: // RIGHT_PARA
+      case 7: // RAISE
+      case 8: // HIGH_OP
+      case 9: // LOW_OP
+      case 10: // LEFT_PARA
+      case 11: // RIGHT_PARA
+      case 12: // STRING
+      case 13: // EQUALS
         value.template destroy< std::string > ();
         break;
 
@@ -880,13 +924,15 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 11: // stream
-      case 12: // optline
-      case 13: // line
-      case 14: // operator
-      case 15: // spaceeater
-      case 16: // optspace
-      case 17: // anything
+      case 15: // chunk
+      case 16: // optline
+      case 17: // line
+      case 18: // lowop
+      case 19: // highop
+      case 20: // raiseop
+      case 21: // spaceeater
+      case 22: // optspace
+      case 23: // anything
         value.move< Node > (s.value);
         break;
 
@@ -894,9 +940,13 @@ namespace yy {
       case 4: // BLANK
       case 5: // NL
       case 6: // NUMERIC
-      case 7: // OP
-      case 8: // LEFT_PARA
-      case 9: // RIGHT_PARA
+      case 7: // RAISE
+      case 8: // HIGH_OP
+      case 9: // LOW_OP
+      case 10: // LEFT_PARA
+      case 11: // RIGHT_PARA
+      case 12: // STRING
+      case 13: // EQUALS
         value.move< std::string > (s.value);
         break;
 
@@ -954,7 +1004,8 @@ namespace yy {
     const unsigned short int
     yytoken_number_[] =
     {
-       0,   256,   257,   258,   259,   260,   261,   262,   263,   264
+       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+     265,   266,   267,   268
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -990,9 +1041,21 @@ namespace yy {
   }
 
   parser::symbol_type
-  parser::make_OP (const std::string& v)
+  parser::make_RAISE (const std::string& v)
   {
-    return symbol_type (token::OP, v);
+    return symbol_type (token::RAISE, v);
+  }
+
+  parser::symbol_type
+  parser::make_HIGH_OP (const std::string& v)
+  {
+    return symbol_type (token::HIGH_OP, v);
+  }
+
+  parser::symbol_type
+  parser::make_LOW_OP (const std::string& v)
+  {
+    return symbol_type (token::LOW_OP, v);
   }
 
   parser::symbol_type
@@ -1007,10 +1070,22 @@ namespace yy {
     return symbol_type (token::RIGHT_PARA, v);
   }
 
+  parser::symbol_type
+  parser::make_STRING (const std::string& v)
+  {
+    return symbol_type (token::STRING, v);
+  }
+
+  parser::symbol_type
+  parser::make_EQUALS (const std::string& v)
+  {
+    return symbol_type (token::EQUALS, v);
+  }
+
 
 
 } // yy
-#line 1014 "interpreter.tab.hh" // lalr1.cc:377
+#line 1089 "interpreter.tab.hh" // lalr1.cc:377
 
 
 
