@@ -1,4 +1,4 @@
 rm output.dot graph.png
-cat text2 | ./parser
+cat testtext | ./parser
 dot -T png -o graph.png output.dot
 xdg-open graph.png
