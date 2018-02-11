@@ -5,6 +5,7 @@
 %code requires{
 	#include "Node.hh"
 	#include <string>
+	extern "C" int yyparse (void);
 }
 %code{
 	Node root;
@@ -113,3 +114,4 @@ args		:LEFT_PARA RIGHT_PARA {}
 
 var			: NAME			{$$ = Node("var",$1,id++);}
 			;
+%%

@@ -44,8 +44,9 @@
 
 	#include "Node.hh"
 	#include <string>
+	extern "C" int yyparse (void);
 
-#line 49 "interpreter.tab.hh" // lalr1.cc:377
+#line 50 "interpreter.tab.hh" // lalr1.cc:377
 
 
 # include <cstdlib> // std::abort
@@ -122,7 +123,7 @@
 
 
 namespace yy {
-#line 126 "interpreter.tab.hh" // lalr1.cc:377
+#line 127 "interpreter.tab.hh" // lalr1.cc:377
 
 
 
@@ -1224,7 +1225,7 @@ namespace yy {
 
 
 } // yy
-#line 1228 "interpreter.tab.hh" // lalr1.cc:377
+#line 1229 "interpreter.tab.hh" // lalr1.cc:377
 
 
 

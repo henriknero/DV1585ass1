@@ -1,5 +1,5 @@
 parser: lex.yy.c interpreter.tab.o main.cc
-	g++ -g -oparser interpreter.tab.o lex.yy.c main.cc
+	g++ -g -oint interpreter.tab.o lex.yy.c main.cc
 interpreter.tab.o: interpreter.tab.cc
 	g++ -g -c interpreter.tab.cc
 interpreter.tab.cc: interpreter.yy
