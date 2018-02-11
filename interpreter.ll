@@ -13,6 +13,7 @@
 [0-9]+										{return yy::parser::make_NUMERIC(yytext);}
 [(]											{return yy::parser::make_LEFT_PARA(yytext);}	
 [)]											{return yy::parser::make_RIGHT_PARA(yytext);}
+[,]											{return yy::parser::make_COMMA(yytext);}
 [=]											{return yy::parser::make_EQUALS(yytext);}
 return										{return yy::parser::make_RETURN(yytext);}
 break										{return yy::parser::make_BREAK(yytext);}

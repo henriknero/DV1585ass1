@@ -44,9 +44,8 @@
 
 	#include "Node.hh"
 	#include <string>
-	extern "C" int yyparse (void);
 
-#line 50 "interpreter.tab.hh" // lalr1.cc:377
+#line 49 "interpreter.tab.hh" // lalr1.cc:377
 
 
 # include <cstdlib> // std::abort
@@ -123,7 +122,7 @@
 
 
 namespace yy {
-#line 127 "interpreter.tab.hh" // lalr1.cc:377
+#line 126 "interpreter.tab.hh" // lalr1.cc:377
 
 
 
@@ -276,6 +275,7 @@ namespace yy {
       // assign
       // functioncall
       // optspace
+      // explist
       // exp
       // lowop
       // highop
@@ -295,6 +295,7 @@ namespace yy {
       // LOW_OP
       // LEFT_PARA
       // RIGHT_PARA
+      // COMMA
       // EQUALS
       // STRING
       // RETURN
@@ -334,15 +335,16 @@ namespace yy {
         LOW_OP = 264,
         LEFT_PARA = 265,
         RIGHT_PARA = 266,
-        EQUALS = 267,
-        STRING = 268,
-        RETURN = 269,
-        BREAK = 270,
-        DO = 271,
-        WHILE = 272,
-        ENDD = 273,
-        IF = 274,
-        THEN = 275
+        COMMA = 267,
+        EQUALS = 268,
+        STRING = 269,
+        RETURN = 270,
+        BREAK = 271,
+        DO = 272,
+        WHILE = 273,
+        ENDD = 274,
+        IF = 275,
+        THEN = 276
       };
     };
 
@@ -486,6 +488,10 @@ namespace yy {
     static inline
     symbol_type
     make_RIGHT_PARA (const std::string& v);
+
+    static inline
+    symbol_type
+    make_COMMA (const std::string& v);
 
     static inline
     symbol_type
@@ -724,12 +730,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 63,     ///< Last index in yytable_.
-      yynnts_ = 15,  ///< Number of nonterminal symbols.
+      yylast_ = 69,     ///< Last index in yytable_.
+      yynnts_ = 16,  ///< Number of nonterminal symbols.
       yyfinal_ = 12, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 21  ///< Number of tokens.
+      yyntokens_ = 22  ///< Number of tokens.
     };
 
 
@@ -771,9 +777,9 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20
+      15,    16,    17,    18,    19,    20,    21
     };
-    const unsigned int user_token_number_max_ = 275;
+    const unsigned int user_token_number_max_ = 276;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -804,20 +810,21 @@ namespace yy {
   {
       switch (other.type_get ())
     {
-      case 22: // block
-      case 23: // chunk
-      case 24: // stat
-      case 25: // assign
-      case 26: // functioncall
-      case 27: // optspace
-      case 28: // exp
-      case 29: // lowop
-      case 30: // highop
-      case 31: // raiseop
-      case 32: // anything
-      case 33: // prefixexp
-      case 34: // args
-      case 35: // var
+      case 23: // block
+      case 24: // chunk
+      case 25: // stat
+      case 26: // assign
+      case 27: // functioncall
+      case 28: // optspace
+      case 29: // explist
+      case 30: // exp
+      case 31: // lowop
+      case 32: // highop
+      case 33: // raiseop
+      case 34: // anything
+      case 35: // prefixexp
+      case 36: // args
+      case 37: // var
         value.copy< Node > (other.value);
         break;
 
@@ -830,15 +837,16 @@ namespace yy {
       case 9: // LOW_OP
       case 10: // LEFT_PARA
       case 11: // RIGHT_PARA
-      case 12: // EQUALS
-      case 13: // STRING
-      case 14: // RETURN
-      case 15: // BREAK
-      case 16: // DO
-      case 17: // WHILE
-      case 18: // ENDD
-      case 19: // IF
-      case 20: // THEN
+      case 12: // COMMA
+      case 13: // EQUALS
+      case 14: // STRING
+      case 15: // RETURN
+      case 16: // BREAK
+      case 17: // DO
+      case 18: // WHILE
+      case 19: // ENDD
+      case 20: // IF
+      case 21: // THEN
         value.copy< std::string > (other.value);
         break;
 
@@ -858,20 +866,21 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
-      case 22: // block
-      case 23: // chunk
-      case 24: // stat
-      case 25: // assign
-      case 26: // functioncall
-      case 27: // optspace
-      case 28: // exp
-      case 29: // lowop
-      case 30: // highop
-      case 31: // raiseop
-      case 32: // anything
-      case 33: // prefixexp
-      case 34: // args
-      case 35: // var
+      case 23: // block
+      case 24: // chunk
+      case 25: // stat
+      case 26: // assign
+      case 27: // functioncall
+      case 28: // optspace
+      case 29: // explist
+      case 30: // exp
+      case 31: // lowop
+      case 32: // highop
+      case 33: // raiseop
+      case 34: // anything
+      case 35: // prefixexp
+      case 36: // args
+      case 37: // var
         value.copy< Node > (v);
         break;
 
@@ -884,15 +893,16 @@ namespace yy {
       case 9: // LOW_OP
       case 10: // LEFT_PARA
       case 11: // RIGHT_PARA
-      case 12: // EQUALS
-      case 13: // STRING
-      case 14: // RETURN
-      case 15: // BREAK
-      case 16: // DO
-      case 17: // WHILE
-      case 18: // ENDD
-      case 19: // IF
-      case 20: // THEN
+      case 12: // COMMA
+      case 13: // EQUALS
+      case 14: // STRING
+      case 15: // RETURN
+      case 16: // BREAK
+      case 17: // DO
+      case 18: // WHILE
+      case 19: // ENDD
+      case 20: // IF
+      case 21: // THEN
         value.copy< std::string > (v);
         break;
 
@@ -948,20 +958,21 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
-      case 22: // block
-      case 23: // chunk
-      case 24: // stat
-      case 25: // assign
-      case 26: // functioncall
-      case 27: // optspace
-      case 28: // exp
-      case 29: // lowop
-      case 30: // highop
-      case 31: // raiseop
-      case 32: // anything
-      case 33: // prefixexp
-      case 34: // args
-      case 35: // var
+      case 23: // block
+      case 24: // chunk
+      case 25: // stat
+      case 26: // assign
+      case 27: // functioncall
+      case 28: // optspace
+      case 29: // explist
+      case 30: // exp
+      case 31: // lowop
+      case 32: // highop
+      case 33: // raiseop
+      case 34: // anything
+      case 35: // prefixexp
+      case 36: // args
+      case 37: // var
         value.template destroy< Node > ();
         break;
 
@@ -974,15 +985,16 @@ namespace yy {
       case 9: // LOW_OP
       case 10: // LEFT_PARA
       case 11: // RIGHT_PARA
-      case 12: // EQUALS
-      case 13: // STRING
-      case 14: // RETURN
-      case 15: // BREAK
-      case 16: // DO
-      case 17: // WHILE
-      case 18: // ENDD
-      case 19: // IF
-      case 20: // THEN
+      case 12: // COMMA
+      case 13: // EQUALS
+      case 14: // STRING
+      case 15: // RETURN
+      case 16: // BREAK
+      case 17: // DO
+      case 18: // WHILE
+      case 19: // ENDD
+      case 20: // IF
+      case 21: // THEN
         value.template destroy< std::string > ();
         break;
 
@@ -1009,20 +1021,21 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 22: // block
-      case 23: // chunk
-      case 24: // stat
-      case 25: // assign
-      case 26: // functioncall
-      case 27: // optspace
-      case 28: // exp
-      case 29: // lowop
-      case 30: // highop
-      case 31: // raiseop
-      case 32: // anything
-      case 33: // prefixexp
-      case 34: // args
-      case 35: // var
+      case 23: // block
+      case 24: // chunk
+      case 25: // stat
+      case 26: // assign
+      case 27: // functioncall
+      case 28: // optspace
+      case 29: // explist
+      case 30: // exp
+      case 31: // lowop
+      case 32: // highop
+      case 33: // raiseop
+      case 34: // anything
+      case 35: // prefixexp
+      case 36: // args
+      case 37: // var
         value.move< Node > (s.value);
         break;
 
@@ -1035,15 +1048,16 @@ namespace yy {
       case 9: // LOW_OP
       case 10: // LEFT_PARA
       case 11: // RIGHT_PARA
-      case 12: // EQUALS
-      case 13: // STRING
-      case 14: // RETURN
-      case 15: // BREAK
-      case 16: // DO
-      case 17: // WHILE
-      case 18: // ENDD
-      case 19: // IF
-      case 20: // THEN
+      case 12: // COMMA
+      case 13: // EQUALS
+      case 14: // STRING
+      case 15: // RETURN
+      case 16: // BREAK
+      case 17: // DO
+      case 18: // WHILE
+      case 19: // ENDD
+      case 20: // IF
+      case 21: // THEN
         value.move< std::string > (s.value);
         break;
 
@@ -1103,7 +1117,7 @@ namespace yy {
     {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275
+     275,   276
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -1169,6 +1183,12 @@ namespace yy {
   }
 
   parser::symbol_type
+  parser::make_COMMA (const std::string& v)
+  {
+    return symbol_type (token::COMMA, v);
+  }
+
+  parser::symbol_type
   parser::make_EQUALS (const std::string& v)
   {
     return symbol_type (token::EQUALS, v);
@@ -1225,7 +1245,7 @@ namespace yy {
 
 
 } // yy
-#line 1229 "interpreter.tab.hh" // lalr1.cc:377
+#line 1249 "interpreter.tab.hh" // lalr1.cc:377
 
 
 

@@ -16,13 +16,13 @@ public:
     for(int i=0; i<depth; i++)
         std::cout << "  ";
     std::cout << tag << ":" << value << std::endl;
-    for(auto i=children.begin(); i!=children.end(); i++)
+    for(std::list<Node>::iterator i=children.begin(); i!=children.end(); i++)
         (*i).dump(depth+1);
 	}
 	void dump_visual()
 	{
 		std::cout << id << " [label=\"" << tag << ":" << value << "\"];" << std::endl;	
-		for (auto i=children.begin(); i!=children.end();i++){
+		for (std::list<Node>::iterator i=children.begin(); i!=children.end();i++){
 			(*i).dump_visual();
 			std::cout << id << " -> " << (*i).id << ";" << std::endl;
 		}

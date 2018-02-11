@@ -5,7 +5,6 @@
 %code requires{
 	#include "Node.hh"
 	#include <string>
-	extern "C" int yyparse (void);
 }
 %code{
 	Node root;
@@ -17,6 +16,7 @@
 %type  <Node> chunk
 %type  <Node> stat
 %type  <Node> functioncall
+%type  <Node> explist
 %type  <Node> exp
 %type  <Node> prefixexp
 %type  <Node> args
@@ -36,6 +36,7 @@
 %token <std::string> LOW_OP
 %token <std::string> LEFT_PARA
 %token <std::string> RIGHT_PARA
+%token <std::string> COMMA
 %token <std::string> EQUALS
 %token <std::string> STRING
 
@@ -63,18 +64,23 @@ stat	    : assign {$$ = $1;}
             ;
 
 assign		: functioncall {$$ = $1;}
-			| var optspace EQUALS optspace exp optspace {$$ = Node("assign","",id++); 
+			| prefixexp optspace EQUALS optspace explist optspace {$$ = Node("assign","",id++); 
 											  $$.children.push_back($1);
 											  $$.children.push_back($5);} 
 			;
-functioncall: prefixexp optspace args optspace	{$$ = Node("funccall","",id++); 
+functioncall: prefixexp args optspace {$$ = Node("funccall","",id++); 
+												std::cout << "funccall build" << std::endl;
 												$$.children.push_back($1); 
-												$$.children.push_back($3);}
+												$$.children.push_back($2);}
 			;
 
-optspace	: {}
-			| BLANK {}
+optspace	: {std::cout << "optspace is called but empty"<< std::endl;}
+			| BLANK {std::cout << "optspace is called not empty"<< std::endl;}
 			;
+
+explist		: exp {$$ = Node("explist","",id++);$$.children.push_back($1);}
+			| explist optspace COMMA optspace exp {$$ = $1;
+													$$.children.push_back($5);}
 
 exp			: STRING {$$ = Node("String",$1,id++);}
 			| optspace prefixexp optspace {$$ = $2;}
@@ -99,19 +105,22 @@ raiseop		: anything			{$$ = $1;}
 									$$.children.push_back($5);}
 			
 			;
-anything	: optspace NUMERIC optspace {$$ = Node("Number",$2,id++);}
-			| optspace prefixexp optspace {$$ = $2;}
+anything	: NUMERIC optspace {$$ = Node("Number",$1,id++);}
+			| prefixexp optspace {$$ = $1;}
 			
 			;
 
-prefixexp	: LEFT_PARA optspace exp optspace RIGHT_PARA {$$ = $3;}
-			| var {$$ = $1;}
+prefixexp	: var {$$ = $1;std::cout << "var added to prefix: " << std::endl;}
+			| functioncall {$$ = $1;}
+			| LEFT_PARA optspace exp optspace RIGHT_PARA {$$ = $3;}
 			;
-args		:LEFT_PARA RIGHT_PARA {} 
-			|LEFT_PARA optspace exp optspace RIGHT_PARA {$$ = Node("args","",id++); 
+args		:LEFT_PARA optspace RIGHT_PARA {$$ = Node("emptypara","",id++);} 
+			|BLANK STRING {$$ = Node("String", $1,id++);}
+			|LEFT_PARA optspace explist optspace RIGHT_PARA 
+														{$$ = Node("args","",id++); 
 														$$.children.push_back($3);}
 			;
 
-var			: NAME			{$$ = Node("var",$1,id++);}
+var			: NAME {$$ = Node("var",$1,id++);std::cout << "var created" << $1 << std::endl;}
 			;
 %%
