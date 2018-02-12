@@ -23,9 +23,11 @@
 %type  <Node> raiseop
 %type  <Node> highop
 %type  <Node> assign
+%type  <Node> tableconstr
 %type  <Node> lowop
 %type  <Node> anything
 %type  <Node> optspace
+%type  <Node> spaceeater
 %type  <Node> var
 %token <std::string> NAME
 %token <std::string> BLANK
@@ -34,8 +36,12 @@
 %token <std::string> RAISE
 %token <std::string> HIGH_OP
 %token <std::string> LOW_OP
+%token <std::string> LOGIC
 %token <std::string> LEFT_PARA
 %token <std::string> RIGHT_PARA
+%token <std::string> LCURL
+%token <std::string> RCURL
+%token <std::string> DOT
 %token <std::string> COMMA
 %token <std::string> EQUALS
 %token <std::string> STRING
@@ -46,7 +52,11 @@
 %token <std::string> WHILE
 %token <std::string> ENDD
 %token <std::string> IF
+%token <std::string> TRUE
+%token <std::string> FALSE
 %token <std::string> THEN
+%token <std::string> FOR
+%token <std::string> IN
 %token END 0 "end of file"
 
 %%
@@ -54,21 +64,39 @@ block      : chunk {$$ = $1;
                         root = $$;
                         }
             ;
-chunk		: stat {$$ = Node("chunk","",id++);$$.children.push_back($1);}
+chunk		: optspace stat {$$ = Node("chunk","",id++);$$.children.push_back($2);}
 			| chunk stat 		{$$ = $1;
                                 $$.children.push_back($2);
                                 root = $$;
                                 } 
 			;
 stat	    : assign {$$ = $1;} 
-            ;
-
-assign		: functioncall {$$ = $1;}
-			| prefixexp optspace EQUALS optspace explist optspace {$$ = Node("assign","",id++); 
-											  $$.children.push_back($1);
-											  $$.children.push_back($5);} 
+			| functioncall {$$ = $1;}
+			| FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace {
+					$$ = Node("for","",id++);
+					$$.children.push_back(Node("var",$3,id++));
+					$$.children.push_back($7);
+					$$.children.push_back($10);
+					$$.children.push_back($12);
+					}			
+			| IF exp THEN block ENDD optspace {$$ = Node("If","",id++); 
+														$$.children.push_back($2);
+														$$.children.push_back($4);} 
 			;
-functioncall: prefixexp args optspace {$$ = Node("funccall","",id++); 
+
+assign		: exp optspace EQUALS optspace explist {$$ = Node("assign",$3,id++);
+											  std::cout << "Assigning var to" << std::endl;
+											  $$.children.push_back($1);
+											  $$.children.push_back($5);
+											  }
+			| exp optspace EQUALS optspace functioncall {$$ = Node("assign",$3, id++);
+															   $$.children.push_back($1);
+															   $$.children.push_back($5);}
+
+			;
+			
+
+functioncall: exp args optspace {$$ = Node("funccall","",id++); 
 												std::cout << "funccall build" << std::endl;
 												$$.children.push_back($1); 
 												$$.children.push_back($2);}
@@ -78,49 +106,54 @@ optspace	: {std::cout << "optspace is called but empty"<< std::endl;}
 			| BLANK {std::cout << "optspace is called not empty"<< std::endl;}
 			;
 
-explist		: exp {$$ = Node("explist","",id++);$$.children.push_back($1);}
-			| explist optspace COMMA optspace exp {$$ = $1;
-													$$.children.push_back($5);}
+explist		: exp {$$ = Node("explist","",id++);$$.children.push_back($1);std::cout << "explist"<< std::endl;}
+			| explist COMMA exp {$$ = $1;
+								$$.children.push_back($3);}
 
-exp			: STRING {$$ = Node("String",$1,id++);}
-			| optspace prefixexp optspace {$$ = $2;}
-			| lowop {$$ = $1;}
+exp			: lowop {$$ = $1;std::cout << "lowop" << std::endl;}
 			;	
 lowop		: highop {$$ = $1;}
-			| lowop optspace LOW_OP optspace highop {$$ = Node("OP",$3,id++);
+			| lowop LOW_OP highop {$$ = Node("OP",$2,id++);
 													$$.children.push_back($1);
-													$$.children.push_back($5);
+													$$.children.push_back($3);
 													}
 			;
 highop		: raiseop {$$ = $1;}
-			| highop optspace HIGH_OP optspace raiseop {$$ = Node("OP",$3,id++);
+			| highop HIGH_OP raiseop {$$ = Node("OP",$2,id++);
 									$$.children.push_back($1);
-									$$.children.push_back($5);
+									$$.children.push_back($3);
 									}
 			;
 
-raiseop		: anything			{$$ = $1;}
-			| raiseop optspace RAISE optspace anything {$$ = Node("OP",$3,id++); 
+raiseop		: spaceeater			{$$ = $1;}
+			| raiseop RAISE spaceeater {$$ = Node("OP",$2,id++); 
 									$$.children.push_back($1); 
-									$$.children.push_back($5);}
+									$$.children.push_back($3);}
 			
 			;
-anything	: NUMERIC optspace {$$ = Node("Number",$1,id++);}
-			| prefixexp optspace {$$ = $1;}
-			
+spaceeater	: optspace anything optspace {$$ = $2;}
 			;
 
-prefixexp	: var {$$ = $1;std::cout << "var added to prefix: " << std::endl;}
-			| functioncall {$$ = $1;}
-			| LEFT_PARA optspace exp optspace RIGHT_PARA {$$ = $3;}
+anything	: var {$$ = $1;}
+			| STRING {$$ = Node("String",$1,id++);} 
+			| NUMERIC {$$ = Node("Number",$1,id++);}
+			| LEFT_PARA exp RIGHT_PARA {$$ = $2;std::cout << "prefix params" << std::endl;}
+			| tableconstr {$$ = $1;}
+			| TRUE {$$ = Node("bool",$1,id++);}
+			| FALSE {$$ = Node("bool",$1,id++);}
 			;
-args		:LEFT_PARA optspace RIGHT_PARA {$$ = Node("emptypara","",id++);} 
-			|BLANK STRING {$$ = Node("String", $1,id++);}
-			|LEFT_PARA optspace explist optspace RIGHT_PARA 
+
+tableconstr	: LCURL explist RCURL {$$ = Node("list","",id++); $$.children.push_back($2);}
+			;
+
+args		: optspace LEFT_PARA optspace RIGHT_PARA {$$ = Node("emptypara","",id++);} 
+			| STRING {$$ = Node("String", $1,id++);}
+			| optspace LEFT_PARA explist RIGHT_PARA 
 														{$$ = Node("args","",id++); 
 														$$.children.push_back($3);}
 			;
 
-var			: NAME {$$ = Node("var",$1,id++);std::cout << "var created" << $1 << std::endl;}
+var			: NAME {$$ = Node("var",$1,id++); std::cout << "var is made:" << $1 << std::endl;}
+			| var DOT NAME {$$ = $1; $$.children.push_back(Node("var", $3, id++));}
 			;
 %%

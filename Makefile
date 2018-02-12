@@ -3,7 +3,7 @@ parser: lex.yy.c interpreter.tab.o main.cc
 interpreter.tab.o: interpreter.tab.cc
 	g++ -g -c interpreter.tab.cc
 interpreter.tab.cc: interpreter.yy
-	bison interpreter.yy
+	bison -v --report-file=report.txt  interpreter.yy
 lex.yy.c: interpreter.ll interpreter.tab.cc
 	flex interpreter.ll
 clean: 
