@@ -831,152 +831,149 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 13 "interpreter.ll"
-{std::cout << "Numeric" << std::endl;
-											return yy::parser::make_NUMERIC(yytext);}
+{return yy::parser::make_NUMERIC(yytext);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 15 "interpreter.ll"
+#line 14 "interpreter.ll"
 {return yy::parser::make_LEFT_PARA(yytext);}	
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 16 "interpreter.ll"
+#line 15 "interpreter.ll"
 {return yy::parser::make_RIGHT_PARA(yytext);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 17 "interpreter.ll"
+#line 16 "interpreter.ll"
 {return yy::parser::make_LCURL(yytext);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 18 "interpreter.ll"
+#line 17 "interpreter.ll"
 {return yy::parser::make_RCURL(yytext);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 19 "interpreter.ll"
+#line 18 "interpreter.ll"
 {return yy::parser::make_LHARD(yytext);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 20 "interpreter.ll"
+#line 19 "interpreter.ll"
 {return yy::parser::make_RHARD(yytext);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 21 "interpreter.ll"
+#line 20 "interpreter.ll"
 {return yy::parser::make_DOT(yytext);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 22 "interpreter.ll"
+#line 21 "interpreter.ll"
 {return yy::parser::make_COMMA(yytext);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 23 "interpreter.ll"
-{std::cout << "Equal happened" << std::endl;
-											return yy::parser::make_EQUALS(yytext);}
+#line 22 "interpreter.ll"
+{return yy::parser::make_EQUALS(yytext);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 25 "interpreter.ll"
+#line 23 "interpreter.ll"
 {return yy::parser::make_FUNCTION(yytext);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 26 "interpreter.ll"
+#line 24 "interpreter.ll"
 {return yy::parser::make_RETURN(yytext);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 27 "interpreter.ll"
+#line 25 "interpreter.ll"
 {return yy::parser::make_BREAK(yytext);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 28 "interpreter.ll"
+#line 26 "interpreter.ll"
 {return yy::parser::make_REPEAT(yytext);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 29 "interpreter.ll"
+#line 27 "interpreter.ll"
 {return yy::parser::make_UNTIL(yytext);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 30 "interpreter.ll"
+#line 28 "interpreter.ll"
 {return yy::parser::make_DO(yytext);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 31 "interpreter.ll"
+#line 29 "interpreter.ll"
 {return yy::parser::make_ENDD(yytext);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 32 "interpreter.ll"
+#line 30 "interpreter.ll"
 {return yy::parser::make_IF(yytext);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 33 "interpreter.ll"
+#line 31 "interpreter.ll"
 {return yy::parser::make_ELSE(yytext);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 34 "interpreter.ll"
+#line 32 "interpreter.ll"
 {return yy::parser::make_TRUE(yytext);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 35 "interpreter.ll"
+#line 33 "interpreter.ll"
 {return yy::parser::make_FALSE(yytext);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 36 "interpreter.ll"
+#line 34 "interpreter.ll"
 {return yy::parser::make_THEN(yytext);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 37 "interpreter.ll"
+#line 35 "interpreter.ll"
 {return yy::parser::make_IN(yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 38 "interpreter.ll"
+#line 36 "interpreter.ll"
 {return yy::parser::make_NAME(yytext);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 39 "interpreter.ll"
+#line 37 "interpreter.ll"
 {BEGIN(STRING);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 40 "interpreter.ll"
+#line 38 "interpreter.ll"
 {BEGIN(0);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 41 "interpreter.ll"
-{std::cout << "String happened" << std::endl;
-											return yy::parser::make_STRING(yytext);}
+#line 39 "interpreter.ll"
+{return yy::parser::make_STRING(yytext);}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STRING):
-#line 43 "interpreter.ll"
+#line 40 "interpreter.ll"
 return yy::parser::make_END();
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 44 "interpreter.ll"
+#line 41 "interpreter.ll"
 ECHO;
 	YY_BREAK
-#line 980 "lex.yy.c"
+#line 977 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1939,7 +1936,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 44 "interpreter.ll"
+#line 41 "interpreter.ll"
 
 
 

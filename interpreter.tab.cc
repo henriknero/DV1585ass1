@@ -742,259 +742,257 @@ namespace yy {
   case 16:
 #line 118 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("assign",yystack_[2].value.as< std::string > (),id++);
-											  std::cout << "Assigning var to" << std::endl;
 											  yylhs.value.as< Node > ().children.push_back(yystack_[3].value.as< Node > ());
 											  yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());
 											  }
-#line 750 "interpreter.tab.cc" // lalr1.cc:859
+#line 749 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 17:
-#line 136 "interpreter.yy" // lalr1.cc:859
+#line 124 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("funccall","",id++); 
-												std::cout << "funccall build" << std::endl;
 												yylhs.value.as< Node > ().children.push_back(yystack_[2].value.as< Node > ()); 
 												yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 759 "interpreter.tab.cc" // lalr1.cc:859
+#line 757 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 18:
-#line 142 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "optspace is called but empty"<< std::endl;}
-#line 765 "interpreter.tab.cc" // lalr1.cc:859
+#line 129 "interpreter.yy" // lalr1.cc:859
+    {}
+#line 763 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 19:
-#line 143 "interpreter.yy" // lalr1.cc:859
-    {std::cout << "optspace is called not empty"<< std::endl;}
-#line 771 "interpreter.tab.cc" // lalr1.cc:859
+#line 130 "interpreter.yy" // lalr1.cc:859
+    {}
+#line 769 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 20:
-#line 146 "interpreter.yy" // lalr1.cc:859
-    {yylhs.value.as< Node > () = Node("explist","",id++);yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());std::cout << "explist"<< std::endl;}
-#line 777 "interpreter.tab.cc" // lalr1.cc:859
+#line 133 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
+#line 775 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 21:
-#line 147 "interpreter.yy" // lalr1.cc:859
+#line 134 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[2].value.as< Node > ();
 								yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
-#line 784 "interpreter.tab.cc" // lalr1.cc:859
+#line 782 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 22:
-#line 150 "interpreter.yy" // lalr1.cc:859
-    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();std::cout << "lowop" << std::endl;}
-#line 790 "interpreter.tab.cc" // lalr1.cc:859
+#line 137 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
+#line 788 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 23:
-#line 152 "interpreter.yy" // lalr1.cc:859
+#line 139 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 796 "interpreter.tab.cc" // lalr1.cc:859
+#line 794 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 24:
-#line 153 "interpreter.yy" // lalr1.cc:859
+#line 140 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("OP",yystack_[1].value.as< std::string > (),id++);
 													yylhs.value.as< Node > ().children.push_back(yystack_[2].value.as< Node > ());
 													yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());
 													}
-#line 805 "interpreter.tab.cc" // lalr1.cc:859
+#line 803 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 25:
-#line 158 "interpreter.yy" // lalr1.cc:859
+#line 145 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 811 "interpreter.tab.cc" // lalr1.cc:859
+#line 809 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 26:
-#line 159 "interpreter.yy" // lalr1.cc:859
+#line 146 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("OP",yystack_[1].value.as< std::string > (),id++);
 									yylhs.value.as< Node > ().children.push_back(yystack_[2].value.as< Node > ());
 									yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());
 									}
-#line 820 "interpreter.tab.cc" // lalr1.cc:859
+#line 818 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 27:
-#line 165 "interpreter.yy" // lalr1.cc:859
+#line 152 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 826 "interpreter.tab.cc" // lalr1.cc:859
+#line 824 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 28:
-#line 166 "interpreter.yy" // lalr1.cc:859
+#line 153 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("OP",yystack_[1].value.as< std::string > (),id++); 
 									yylhs.value.as< Node > ().children.push_back(yystack_[2].value.as< Node > ()); 
 									yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
-#line 834 "interpreter.tab.cc" // lalr1.cc:859
+#line 832 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 29:
-#line 171 "interpreter.yy" // lalr1.cc:859
+#line 158 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[1].value.as< Node > ();}
-#line 840 "interpreter.tab.cc" // lalr1.cc:859
+#line 838 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 30:
-#line 174 "interpreter.yy" // lalr1.cc:859
+#line 161 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 846 "interpreter.tab.cc" // lalr1.cc:859
+#line 844 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 31:
-#line 175 "interpreter.yy" // lalr1.cc:859
+#line 162 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("String",yystack_[0].value.as< std::string > (),id++);}
-#line 852 "interpreter.tab.cc" // lalr1.cc:859
+#line 850 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 32:
-#line 176 "interpreter.yy" // lalr1.cc:859
+#line 163 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("Number",yystack_[0].value.as< std::string > (),id++);}
-#line 858 "interpreter.tab.cc" // lalr1.cc:859
+#line 856 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 33:
-#line 177 "interpreter.yy" // lalr1.cc:859
-    {yylhs.value.as< Node > () = yystack_[1].value.as< Node > ();std::cout << "prefix params" << std::endl;}
-#line 864 "interpreter.tab.cc" // lalr1.cc:859
+#line 164 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = yystack_[1].value.as< Node > ();}
+#line 862 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 34:
-#line 178 "interpreter.yy" // lalr1.cc:859
+#line 165 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 870 "interpreter.tab.cc" // lalr1.cc:859
+#line 868 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 35:
-#line 179 "interpreter.yy" // lalr1.cc:859
+#line 166 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("bool",yystack_[0].value.as< std::string > (),id++);}
-#line 876 "interpreter.tab.cc" // lalr1.cc:859
+#line 874 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 36:
-#line 180 "interpreter.yy" // lalr1.cc:859
+#line 167 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("bool",yystack_[0].value.as< std::string > (),id++);}
-#line 882 "interpreter.tab.cc" // lalr1.cc:859
+#line 880 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 37:
-#line 181 "interpreter.yy" // lalr1.cc:859
+#line 168 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("OP",yystack_[1].value.as< std::string > (),id++); yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
-#line 888 "interpreter.tab.cc" // lalr1.cc:859
+#line 886 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 38:
-#line 184 "interpreter.yy" // lalr1.cc:859
+#line 171 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("list","",id++); yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 894 "interpreter.tab.cc" // lalr1.cc:859
+#line 892 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 39:
-#line 187 "interpreter.yy" // lalr1.cc:859
+#line 174 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("emptypara","",id++);}
-#line 900 "interpreter.tab.cc" // lalr1.cc:859
+#line 898 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 40:
-#line 188 "interpreter.yy" // lalr1.cc:859
+#line 175 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("String", yystack_[0].value.as< std::string > (),id++);}
-#line 906 "interpreter.tab.cc" // lalr1.cc:859
+#line 904 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 41:
-#line 190 "interpreter.yy" // lalr1.cc:859
+#line 177 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("args","",id++); 
 														yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 913 "interpreter.tab.cc" // lalr1.cc:859
+#line 911 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 42:
-#line 194 "interpreter.yy" // lalr1.cc:859
+#line 181 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 919 "interpreter.tab.cc" // lalr1.cc:859
+#line 917 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 43:
-#line 195 "interpreter.yy" // lalr1.cc:859
+#line 182 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[0].value.as< Node > ();}
-#line 925 "interpreter.tab.cc" // lalr1.cc:859
+#line 923 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 44:
-#line 197 "interpreter.yy" // lalr1.cc:859
+#line 184 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("varlist","",id++);yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 931 "interpreter.tab.cc" // lalr1.cc:859
+#line 929 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 45:
-#line 198 "interpreter.yy" // lalr1.cc:859
+#line 185 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[4].value.as< Node > (); yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 937 "interpreter.tab.cc" // lalr1.cc:859
+#line 935 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 46:
-#line 200 "interpreter.yy" // lalr1.cc:859
-    {yylhs.value.as< Node > () = Node("var",yystack_[0].value.as< std::string > (),id++); std::cout << "var is made:" << yystack_[0].value.as< std::string > () << std::endl;}
-#line 943 "interpreter.tab.cc" // lalr1.cc:859
+#line 187 "interpreter.yy" // lalr1.cc:859
+    {yylhs.value.as< Node > () = Node("var",yystack_[0].value.as< std::string > (),id++);}
+#line 941 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 47:
-#line 201 "interpreter.yy" // lalr1.cc:859
+#line 188 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[2].value.as< Node > (); yylhs.value.as< Node > ().children.push_back(Node("var", yystack_[0].value.as< std::string > (), id++));}
-#line 949 "interpreter.tab.cc" // lalr1.cc:859
+#line 947 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 48:
-#line 202 "interpreter.yy" // lalr1.cc:859
+#line 189 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("Array","",id++); 
 									yylhs.value.as< Node > ().children.push_back(yystack_[3].value.as< Node > ());
 									yylhs.value.as< Node > ().children.push_back(yystack_[1].value.as< Node > ());}
-#line 957 "interpreter.tab.cc" // lalr1.cc:859
+#line 955 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 49:
-#line 206 "interpreter.yy" // lalr1.cc:859
+#line 193 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("Namelist","",id++); yylhs.value.as< Node > ().children.push_back(Node("Name", yystack_[0].value.as< std::string > (), id++));}
-#line 963 "interpreter.tab.cc" // lalr1.cc:859
+#line 961 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 50:
-#line 207 "interpreter.yy" // lalr1.cc:859
+#line 194 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[4].value.as< Node > (); 
 													yylhs.value.as< Node > ().children.push_back(Node("Name",yystack_[0].value.as< std::string > (),id++));}
-#line 970 "interpreter.tab.cc" // lalr1.cc:859
+#line 968 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 51:
-#line 210 "interpreter.yy" // lalr1.cc:859
+#line 197 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("funcname",yystack_[0].value.as< std::string > (),id++);}
-#line 976 "interpreter.tab.cc" // lalr1.cc:859
+#line 974 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 52:
-#line 211 "interpreter.yy" // lalr1.cc:859
+#line 198 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = yystack_[2].value.as< Node > (); yylhs.value.as< Node > ().children.push_back(Node("subfunc",yystack_[0].value.as< std::string > (),id++));}
-#line 982 "interpreter.tab.cc" // lalr1.cc:859
+#line 980 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 53:
-#line 213 "interpreter.yy" // lalr1.cc:859
+#line 200 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("Return","",id++); yylhs.value.as< Node > ().children.push_back(yystack_[0].value.as< Node > ());}
-#line 988 "interpreter.tab.cc" // lalr1.cc:859
+#line 986 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
   case 54:
-#line 214 "interpreter.yy" // lalr1.cc:859
+#line 201 "interpreter.yy" // lalr1.cc:859
     {yylhs.value.as< Node > () = Node("Break","",id++);}
-#line 994 "interpreter.tab.cc" // lalr1.cc:859
+#line 992 "interpreter.tab.cc" // lalr1.cc:859
     break;
 
 
-#line 998 "interpreter.tab.cc" // lalr1.cc:859
+#line 996 "interpreter.tab.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -1311,11 +1309,11 @@ namespace yy {
   parser::yyrline_[] =
   {
        0,    75,    75,    79,    80,    84,    85,    87,    88,    89,
-      96,    99,   100,   103,   110,   114,   118,   136,   142,   143,
-     146,   147,   150,   152,   153,   158,   159,   165,   166,   171,
-     174,   175,   176,   177,   178,   179,   180,   181,   184,   187,
-     188,   189,   194,   195,   197,   198,   200,   201,   202,   206,
-     207,   210,   211,   213,   214
+      96,    99,   100,   103,   110,   114,   118,   124,   129,   130,
+     133,   134,   137,   139,   140,   145,   146,   152,   153,   158,
+     161,   162,   163,   164,   165,   166,   167,   168,   171,   174,
+     175,   176,   181,   182,   184,   185,   187,   188,   189,   193,
+     194,   197,   198,   200,   201
   };
 
   // Print the state stack on the debug stream.
@@ -1350,6 +1348,6 @@ namespace yy {
 
 
 } // yy
-#line 1354 "interpreter.tab.cc" // lalr1.cc:1167
-#line 215 "interpreter.yy" // lalr1.cc:1168
+#line 1352 "interpreter.tab.cc" // lalr1.cc:1167
+#line 202 "interpreter.yy" // lalr1.cc:1168
 

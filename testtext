@@ -1,1 +1,1 @@
-list[i], list[i + 1] = list[i + 1], list[i]
+print()

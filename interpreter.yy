@@ -116,38 +116,25 @@ else		: ELSE block {$$ = Node("Else","",id++);
 							}
 
 assign		: varlist EQUALS optspace explist {$$ = Node("assign",$2,id++);
-											  std::cout << "Assigning var to" << std::endl;
 											  $$.children.push_back($1);
 											  $$.children.push_back($4);
 											  }
-/*			| explist optspace EQUALS optspace explist {$$ = Node("assign",$3,id++);
-//											  std::cout << "Assigning var to" << std::endl;
-//											  $$.children.push_back($1);
-//											  $$.children.push_back($5);
-//											  }
-
-			| varlist optspace EQUALS optspace functioncall {$$ = Node("assign",$3, id++);
-															   $$.children.push_back($1);
-															   $$.children.push_back($5);}
-*/
-			;
-			
+			;	
 
 functioncall: prefixexp args optspace {$$ = Node("funccall","",id++); 
-												std::cout << "funccall build" << std::endl;
 												$$.children.push_back($1); 
 												$$.children.push_back($2);}
 			;
 
-optspace	: {std::cout << "optspace is called but empty"<< std::endl;}
-			| BLANK {std::cout << "optspace is called not empty"<< std::endl;}
+optspace	: {}
+			| BLANK {}
 			;
 
-explist		: exp {$$ = Node("explist","",id++);$$.children.push_back($1);std::cout << "explist"<< std::endl;}
+explist		: exp {$$ = $1;}
 			| explist COMMA exp {$$ = $1;
 								$$.children.push_back($3);}
 			;
-exp			: lowop {$$ = $1;std::cout << "lowop" << std::endl;}
+exp			: lowop {$$ = $1;}
 			;	
 lowop		: highop {$$ = $1;}
 			| lowop LOW_OP highop {$$ = Node("OP",$2,id++);
@@ -174,7 +161,7 @@ spaceeater	: optspace anything optspace {$$ = $2;}
 anything	: prefixexp {$$ = $1;}
 			| STRING {$$ = Node("String",$1,id++);} 
 			| NUMERIC {$$ = Node("Number",$1,id++);}
-			| LEFT_PARA explist RIGHT_PARA {$$ = $2;std::cout << "prefix params" << std::endl;}
+			| LEFT_PARA explist RIGHT_PARA {$$ = $2;}
 			| tableconstr {$$ = $1;}
 			| TRUE {$$ = Node("bool",$1,id++);}
 			| FALSE {$$ = Node("bool",$1,id++);}
@@ -197,7 +184,7 @@ prefixexp	: varlist {$$ = $1;}
 varlist		: var optspace {$$ = Node("varlist","",id++);$$.children.push_back($1);}
 			| varlist COMMA optspace var optspace {$$ = $1; $$.children.push_back($4);}
 			;
-var			: NAME {$$ = Node("var",$1,id++); std::cout << "var is made:" << $1 << std::endl;}
+var			: NAME {$$ = Node("var",$1,id++);}
 			| var DOT NAME {$$ = $1; $$.children.push_back(Node("var", $3, id++));}
 			| var LHARD exp RHARD {$$ = Node("Array","",id++); 
 									$$.children.push_back($1);
