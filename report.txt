@@ -1,28 +1,24 @@
-Nonterminals useless in grammar
-
-   prefixexp
-
-
 Terminals unused in grammar
 
    NL
    LOGIC
-   RETURN
-   BREAK
    WHILE
    IN
 
 
-State 0 conflicts: 1 shift/reduce
+State 19 conflicts: 1 shift/reduce
 State 27 conflicts: 1 shift/reduce
-State 32 conflicts: 1 shift/reduce
-State 36 conflicts: 1 shift/reduce
-State 44 conflicts: 1 shift/reduce
+State 28 conflicts: 1 shift/reduce
+State 29 conflicts: 1 shift/reduce
+State 39 conflicts: 1 shift/reduce
+State 41 conflicts: 1 shift/reduce
+State 55 conflicts: 1 shift/reduce
+State 57 conflicts: 1 shift/reduce
 State 58 conflicts: 1 shift/reduce
-State 59 conflicts: 1 shift/reduce
-State 65 conflicts: 2 shift/reduce, 1 reduce/reduce
-State 73 conflicts: 1 shift/reduce
-State 75 conflicts: 1 shift/reduce
+State 82 conflicts: 1 shift/reduce
+State 83 conflicts: 1 shift/reduce
+State 91 conflicts: 1 shift/reduce
+State 99 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -33,123 +29,168 @@ Grammar
 
     2 chunk: optspace stat
     3      | chunk stat
+    4      | optspace laststat
+    5      | chunk laststat
 
-    4 stat: assign
-    5     | functioncall
-    6     | FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
-    7     | IF exp THEN block ENDD optspace
+    6 stat: assign
+    7     | functioncall
+    8     | FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
+    9     | REPEAT block UNTIL exp
+   10     | if ENDD optspace
+   11     | if else ENDD optspace
+   12     | FUNCTION BLANK funcname LEFT_PARA namelist RIGHT_PARA block ENDD optspace
 
-    8 assign: exp optspace EQUALS optspace explist
-    9       | exp optspace EQUALS optspace functioncall
+   13 if: IF exp THEN block
 
-   10 functioncall: exp args optspace
+   14 else: ELSE block
 
-   11 optspace: %empty
-   12         | BLANK
+   15 assign: varlist EQUALS optspace explist
 
-   13 explist: exp
-   14        | explist COMMA exp
+   16 functioncall: prefixexp args optspace
 
-   15 exp: lowop
+   17 optspace: %empty
+   18         | BLANK
 
-   16 lowop: highop
-   17      | lowop LOW_OP highop
+   19 explist: exp
+   20        | explist COMMA exp
 
-   18 highop: raiseop
-   19       | highop HIGH_OP raiseop
+   21 exp: lowop
 
-   20 raiseop: spaceeater
-   21        | raiseop RAISE spaceeater
+   22 lowop: highop
+   23      | lowop LOW_OP highop
 
-   22 spaceeater: optspace anything optspace
+   24 highop: raiseop
+   25       | highop HIGH_OP raiseop
 
-   23 anything: var
-   24         | STRING
-   25         | NUMERIC
-   26         | LEFT_PARA exp RIGHT_PARA
-   27         | tableconstr
-   28         | TRUE
-   29         | FALSE
+   26 raiseop: spaceeater
+   27        | raiseop RAISE spaceeater
 
-   30 tableconstr: LCURL explist RCURL
+   28 spaceeater: optspace anything optspace
 
-   31 args: optspace LEFT_PARA optspace RIGHT_PARA
-   32     | STRING
-   33     | optspace LEFT_PARA explist RIGHT_PARA
+   29 anything: prefixexp
+   30         | STRING
+   31         | NUMERIC
+   32         | LEFT_PARA explist RIGHT_PARA
+   33         | tableconstr
+   34         | TRUE
+   35         | FALSE
+   36         | LOW_OP exp
 
-   34 var: NAME
-   35    | var DOT NAME
+   37 tableconstr: LCURL explist RCURL
+
+   38 args: optspace LEFT_PARA optspace RIGHT_PARA
+   39     | STRING
+   40     | optspace LEFT_PARA explist RIGHT_PARA
+
+   41 prefixexp: varlist
+   42          | functioncall
+
+   43 varlist: var optspace
+   44        | varlist COMMA optspace var optspace
+
+   45 var: NAME
+   46    | var DOT NAME
+   47    | var LHARD exp RHARD
+
+   48 namelist: NAME
+   49         | namelist optspace COMMA optspace NAME
+
+   50 funcname: NAME
+   51         | funcname DOT NAME
+
+   52 laststat: RETURN explist
+   53         | BREAK
 
 
 Terminals, with rules where they appear
 
 "end of file" (0) 0
 error (256)
-NAME (258) 6 34 35
-BLANK (259) 6 12
+NAME (258) 8 45 46 48 49 50 51
+BLANK (259) 8 12 18
 NL (260)
-NUMERIC (261) 25
-RAISE (262) 21
-HIGH_OP (263) 19
-LOW_OP (264) 17
+NUMERIC (261) 31
+RAISE (262) 27
+HIGH_OP (263) 25
+LOW_OP (264) 23 36
 LOGIC (265)
-LEFT_PARA (266) 26 31 33
-RIGHT_PARA (267) 26 31 33
-LCURL (268) 30
-RCURL (269) 30
-DOT (270) 35
-COMMA (271) 6 14
-EQUALS (272) 6 8 9
-STRING (273) 24 32
-RETURN (274)
-BREAK (275)
-DO (276) 6
-WHILE (277)
-ENDD (278) 6 7
-IF (279) 7
-TRUE (280) 28
-FALSE (281) 29
-THEN (282) 7
-FOR (283) 6
-IN (284)
+LEFT_PARA (266) 12 32 38 40
+RIGHT_PARA (267) 12 32 38 40
+LCURL (268) 37
+RCURL (269) 37
+LHARD (270) 47
+RHARD (271) 47
+DOT (272) 46 51
+COMMA (273) 8 20 44 49
+EQUALS (274) 8 15
+STRING (275) 30 39
+FUNCTION (276) 12
+RETURN (277) 52
+BREAK (278) 53
+REPEAT (279) 9
+UNTIL (280) 9
+DO (281) 8
+WHILE (282)
+ENDD (283) 8 10 11 12
+IF (284) 13
+ELSE (285) 14
+TRUE (286) 34
+FALSE (287) 35
+THEN (288) 13
+FOR (289) 8
+IN (290)
 
 
 Nonterminals, with rules where they appear
 
-$accept (30)
+$accept (36)
     on left: 0
-block (31)
-    on left: 1, on right: 0 6 7
-chunk (32)
-    on left: 2 3, on right: 1 3
-stat (33)
-    on left: 4 5 6 7, on right: 2 3
-assign (34)
-    on left: 8 9, on right: 4
-functioncall (35)
-    on left: 10, on right: 5 9
-optspace (36)
-    on left: 11 12, on right: 2 6 7 8 9 10 22 31 33
-explist (37)
-    on left: 13 14, on right: 8 14 30 33
-exp (38)
-    on left: 15, on right: 6 7 8 9 10 13 14 26
-lowop (39)
-    on left: 16 17, on right: 15 17
-highop (40)
-    on left: 18 19, on right: 16 17 19
-raiseop (41)
-    on left: 20 21, on right: 18 19 21
-spaceeater (42)
-    on left: 22, on right: 20 21
-anything (43)
-    on left: 23 24 25 26 27 28 29, on right: 22
-tableconstr (44)
-    on left: 30, on right: 27
-args (45)
-    on left: 31 32 33, on right: 10
-var (46)
-    on left: 34 35, on right: 23 35
+block (37)
+    on left: 1, on right: 0 8 9 12 13 14
+chunk (38)
+    on left: 2 3 4 5, on right: 1 3 5
+stat (39)
+    on left: 6 7 8 9 10 11 12, on right: 2 3
+if (40)
+    on left: 13, on right: 10 11
+else (41)
+    on left: 14, on right: 11
+assign (42)
+    on left: 15, on right: 6
+functioncall (43)
+    on left: 16, on right: 7 42
+optspace (44)
+    on left: 17 18, on right: 2 4 8 10 11 12 15 16 28 38 40 43 44 49
+explist (45)
+    on left: 19 20, on right: 15 20 32 37 40 52
+exp (46)
+    on left: 21, on right: 8 9 13 19 20 36 47
+lowop (47)
+    on left: 22 23, on right: 21 23
+highop (48)
+    on left: 24 25, on right: 22 23 25
+raiseop (49)
+    on left: 26 27, on right: 24 25 27
+spaceeater (50)
+    on left: 28, on right: 26 27
+anything (51)
+    on left: 29 30 31 32 33 34 35 36, on right: 28
+tableconstr (52)
+    on left: 37, on right: 33
+args (53)
+    on left: 38 39 40, on right: 16
+prefixexp (54)
+    on left: 41 42, on right: 16 29
+varlist (55)
+    on left: 43 44, on right: 15 41 44
+var (56)
+    on left: 45 46 47, on right: 43 44 46 47
+namelist (57)
+    on left: 48 49, on right: 12 49
+funcname (58)
+    on left: 50 51, on right: 12 51
+laststat (59)
+    on left: 52 53, on right: 4 5
 
 
 State 0
@@ -158,8 +199,7 @@ State 0
 
     BLANK  shift, and go to state 1
 
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
+    $default  reduce using rule 17 (optspace)
 
     block     go to state 2
     chunk     go to state 3
@@ -168,9 +208,9 @@ State 0
 
 State 1
 
-   12 optspace: BLANK .
+   18 optspace: BLANK .
 
-    $default  reduce using rule 12 (optspace)
+    $default  reduce using rule 18 (optspace)
 
 
 State 2
@@ -184,45 +224,49 @@ State 3
 
     1 block: chunk .
     3 chunk: chunk . stat
+    5      | chunk . laststat
 
-    BLANK  shift, and go to state 1
-    IF     shift, and go to state 6
-    FOR    shift, and go to state 7
+    NAME      shift, and go to state 6
+    FUNCTION  shift, and go to state 7
+    RETURN    shift, and go to state 8
+    BREAK     shift, and go to state 9
+    REPEAT    shift, and go to state 10
+    IF        shift, and go to state 11
+    FOR       shift, and go to state 12
 
-    "end of file"  reduce using rule 1 (block)
-    ENDD           reduce using rule 1 (block)
-    $default       reduce using rule 11 (optspace)
+    $default  reduce using rule 1 (block)
 
-    stat          go to state 8
-    assign        go to state 9
-    functioncall  go to state 10
-    optspace      go to state 11
-    exp           go to state 12
-    lowop         go to state 13
-    highop        go to state 14
-    raiseop       go to state 15
-    spaceeater    go to state 16
+    stat          go to state 13
+    if            go to state 14
+    assign        go to state 15
+    functioncall  go to state 16
+    prefixexp     go to state 17
+    varlist       go to state 18
+    var           go to state 19
+    laststat      go to state 20
 
 
 State 4
 
     2 chunk: optspace . stat
+    4      | optspace . laststat
 
-    BLANK  shift, and go to state 1
-    IF     shift, and go to state 6
-    FOR    shift, and go to state 7
+    NAME      shift, and go to state 6
+    FUNCTION  shift, and go to state 7
+    RETURN    shift, and go to state 8
+    BREAK     shift, and go to state 9
+    REPEAT    shift, and go to state 10
+    IF        shift, and go to state 11
+    FOR       shift, and go to state 12
 
-    $default  reduce using rule 11 (optspace)
-
-    stat          go to state 17
-    assign        go to state 9
-    functioncall  go to state 10
-    optspace      go to state 11
-    exp           go to state 12
-    lowop         go to state 13
-    highop        go to state 14
-    raiseop       go to state 15
-    spaceeater    go to state 16
+    stat          go to state 21
+    if            go to state 14
+    assign        go to state 15
+    functioncall  go to state 16
+    prefixexp     go to state 17
+    varlist       go to state 18
+    var           go to state 19
+    laststat      go to state 22
 
 
 State 5
@@ -234,716 +278,1138 @@ State 5
 
 State 6
 
-    7 stat: IF . exp THEN block ENDD optspace
+   45 var: NAME .
 
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    exp         go to state 18
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
+    $default  reduce using rule 45 (var)
 
 
 State 7
 
-    6 stat: FOR . BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
+   12 stat: FUNCTION . BLANK funcname LEFT_PARA namelist RIGHT_PARA block ENDD optspace
 
-    BLANK  shift, and go to state 19
+    BLANK  shift, and go to state 23
 
 
 State 8
+
+   52 laststat: RETURN . explist
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    explist     go to state 25
+    exp         go to state 26
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 9
+
+   53 laststat: BREAK .
+
+    $default  reduce using rule 53 (laststat)
+
+
+State 10
+
+    9 stat: REPEAT . block UNTIL exp
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    block     go to state 31
+    chunk     go to state 3
+    optspace  go to state 4
+
+
+State 11
+
+   13 if: IF . exp THEN block
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 32
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 12
+
+    8 stat: FOR . BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 33
+
+
+State 13
 
     3 chunk: chunk stat .
 
     $default  reduce using rule 3 (chunk)
 
 
-State 9
-
-    4 stat: assign .
-
-    $default  reduce using rule 4 (stat)
-
-
-State 10
-
-    5 stat: functioncall .
-
-    $default  reduce using rule 5 (stat)
-
-
-State 11
-
-   22 spaceeater: optspace . anything optspace
-
-    NAME       shift, and go to state 20
-    NUMERIC    shift, and go to state 21
-    LEFT_PARA  shift, and go to state 22
-    LCURL      shift, and go to state 23
-    STRING     shift, and go to state 24
-    TRUE       shift, and go to state 25
-    FALSE      shift, and go to state 26
-
-    anything     go to state 27
-    tableconstr  go to state 28
-    var          go to state 29
-
-
-State 12
-
-    8 assign: exp . optspace EQUALS optspace explist
-    9       | exp . optspace EQUALS optspace functioncall
-   10 functioncall: exp . args optspace
-
-    BLANK   shift, and go to state 1
-    STRING  shift, and go to state 30
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 31
-    args      go to state 32
-
-
-State 13
-
-   15 exp: lowop .
-   17 lowop: lowop . LOW_OP highop
-
-    LOW_OP  shift, and go to state 33
-
-    $default  reduce using rule 15 (exp)
-
-
 State 14
 
-   16 lowop: highop .
-   19 highop: highop . HIGH_OP raiseop
+   10 stat: if . ENDD optspace
+   11     | if . else ENDD optspace
 
-    HIGH_OP  shift, and go to state 34
+    ENDD  shift, and go to state 34
+    ELSE  shift, and go to state 35
 
-    $default  reduce using rule 16 (lowop)
+    else  go to state 36
 
 
 State 15
 
-   18 highop: raiseop .
-   21 raiseop: raiseop . RAISE spaceeater
+    6 stat: assign .
 
-    RAISE  shift, and go to state 35
-
-    $default  reduce using rule 18 (highop)
+    $default  reduce using rule 6 (stat)
 
 
 State 16
 
-   20 raiseop: spaceeater .
+    7 stat: functioncall .
+   42 prefixexp: functioncall .
 
-    $default  reduce using rule 20 (raiseop)
+    BLANK      reduce using rule 42 (prefixexp)
+    LEFT_PARA  reduce using rule 42 (prefixexp)
+    STRING     reduce using rule 42 (prefixexp)
+    $default   reduce using rule 7 (stat)
 
 
 State 17
+
+   16 functioncall: prefixexp . args optspace
+
+    BLANK   shift, and go to state 1
+    STRING  shift, and go to state 37
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 38
+    args      go to state 39
+
+
+State 18
+
+   15 assign: varlist . EQUALS optspace explist
+   41 prefixexp: varlist .
+   44 varlist: varlist . COMMA optspace var optspace
+
+    COMMA   shift, and go to state 40
+    EQUALS  shift, and go to state 41
+
+    $default  reduce using rule 41 (prefixexp)
+
+
+State 19
+
+   43 varlist: var . optspace
+   46 var: var . DOT NAME
+   47    | var . LHARD exp RHARD
+
+    BLANK  shift, and go to state 1
+    LHARD  shift, and go to state 42
+    DOT    shift, and go to state 43
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 44
+
+
+State 20
+
+    5 chunk: chunk laststat .
+
+    $default  reduce using rule 5 (chunk)
+
+
+State 21
 
     2 chunk: optspace stat .
 
     $default  reduce using rule 2 (chunk)
 
 
-State 18
-
-    7 stat: IF exp . THEN block ENDD optspace
-
-    THEN  shift, and go to state 36
-
-
-State 19
-
-    6 stat: FOR BLANK . NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
-
-    NAME  shift, and go to state 37
-
-
-State 20
-
-   34 var: NAME .
-
-    $default  reduce using rule 34 (var)
-
-
-State 21
-
-   25 anything: NUMERIC .
-
-    $default  reduce using rule 25 (anything)
-
-
 State 22
 
-   26 anything: LEFT_PARA . exp RIGHT_PARA
+    4 chunk: optspace laststat .
 
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    exp         go to state 38
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
+    $default  reduce using rule 4 (chunk)
 
 
 State 23
 
-   30 tableconstr: LCURL . explist RCURL
+   12 stat: FUNCTION BLANK . funcname LEFT_PARA namelist RIGHT_PARA block ENDD optspace
 
-    BLANK  shift, and go to state 1
+    NAME  shift, and go to state 45
 
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    explist     go to state 39
-    exp         go to state 40
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
+    funcname  go to state 46
 
 
 State 24
 
-   24 anything: STRING .
+   28 spaceeater: optspace . anything optspace
 
-    $default  reduce using rule 24 (anything)
+    NAME       shift, and go to state 6
+    NUMERIC    shift, and go to state 47
+    LOW_OP     shift, and go to state 48
+    LEFT_PARA  shift, and go to state 49
+    LCURL      shift, and go to state 50
+    STRING     shift, and go to state 51
+    TRUE       shift, and go to state 52
+    FALSE      shift, and go to state 53
+
+    functioncall  go to state 54
+    anything      go to state 55
+    tableconstr   go to state 56
+    prefixexp     go to state 57
+    varlist       go to state 58
+    var           go to state 19
 
 
 State 25
 
-   28 anything: TRUE .
+   20 explist: explist . COMMA exp
+   52 laststat: RETURN explist .
 
-    $default  reduce using rule 28 (anything)
+    COMMA  shift, and go to state 59
+
+    $default  reduce using rule 52 (laststat)
 
 
 State 26
 
-   29 anything: FALSE .
+   19 explist: exp .
 
-    $default  reduce using rule 29 (anything)
+    $default  reduce using rule 19 (explist)
 
 
 State 27
 
-   22 spaceeater: optspace anything . optspace
+   21 exp: lowop .
+   23 lowop: lowop . LOW_OP highop
 
-    BLANK  shift, and go to state 1
+    LOW_OP  shift, and go to state 60
 
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 41
+    LOW_OP    [reduce using rule 21 (exp)]
+    $default  reduce using rule 21 (exp)
 
 
 State 28
 
-   27 anything: tableconstr .
+   22 lowop: highop .
+   25 highop: highop . HIGH_OP raiseop
 
-    $default  reduce using rule 27 (anything)
+    HIGH_OP  shift, and go to state 61
+
+    HIGH_OP   [reduce using rule 22 (lowop)]
+    $default  reduce using rule 22 (lowop)
 
 
 State 29
 
-   23 anything: var .
-   35 var: var . DOT NAME
+   24 highop: raiseop .
+   27 raiseop: raiseop . RAISE spaceeater
 
-    DOT  shift, and go to state 42
+    RAISE  shift, and go to state 62
 
-    $default  reduce using rule 23 (anything)
+    RAISE     [reduce using rule 24 (highop)]
+    $default  reduce using rule 24 (highop)
 
 
 State 30
 
-   32 args: STRING .
+   26 raiseop: spaceeater .
 
-    $default  reduce using rule 32 (args)
+    $default  reduce using rule 26 (raiseop)
 
 
 State 31
 
-    8 assign: exp optspace . EQUALS optspace explist
-    9       | exp optspace . EQUALS optspace functioncall
-   31 args: optspace . LEFT_PARA optspace RIGHT_PARA
-   33     | optspace . LEFT_PARA explist RIGHT_PARA
+    9 stat: REPEAT block . UNTIL exp
 
-    LEFT_PARA  shift, and go to state 43
-    EQUALS     shift, and go to state 44
+    UNTIL  shift, and go to state 63
 
 
 State 32
 
-   10 functioncall: exp args . optspace
+   13 if: IF exp . THEN block
 
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 45
+    THEN  shift, and go to state 64
 
 
 State 33
 
-   17 lowop: lowop LOW_OP . highop
+    8 stat: FOR BLANK . NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
 
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    highop      go to state 46
-    raiseop     go to state 15
-    spaceeater  go to state 16
+    NAME  shift, and go to state 65
 
 
 State 34
 
-   19 highop: highop HIGH_OP . raiseop
+   10 stat: if ENDD . optspace
 
     BLANK  shift, and go to state 1
 
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    raiseop     go to state 47
-    spaceeater  go to state 16
-
-
-State 35
-
-   21 raiseop: raiseop RAISE . spaceeater
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    spaceeater  go to state 48
-
-
-State 36
-
-    7 stat: IF exp THEN . block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    block     go to state 49
-    chunk     go to state 3
-    optspace  go to state 4
-
-
-State 37
-
-    6 stat: FOR BLANK NAME . optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 50
-
-
-State 38
-
-   26 anything: LEFT_PARA exp . RIGHT_PARA
-
-    RIGHT_PARA  shift, and go to state 51
-
-
-State 39
-
-   14 explist: explist . COMMA exp
-   30 tableconstr: LCURL explist . RCURL
-
-    RCURL  shift, and go to state 52
-    COMMA  shift, and go to state 53
-
-
-State 40
-
-   13 explist: exp .
-
-    $default  reduce using rule 13 (explist)
-
-
-State 41
-
-   22 spaceeater: optspace anything optspace .
-
-    $default  reduce using rule 22 (spaceeater)
-
-
-State 42
-
-   35 var: var DOT . NAME
-
-    NAME  shift, and go to state 54
-
-
-State 43
-
-   31 args: optspace LEFT_PARA . optspace RIGHT_PARA
-   33     | optspace LEFT_PARA . explist RIGHT_PARA
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 55
-    explist     go to state 56
-    exp         go to state 40
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
-
-
-State 44
-
-    8 assign: exp optspace EQUALS . optspace explist
-    9       | exp optspace EQUALS . optspace functioncall
-
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 57
-
-
-State 45
-
-   10 functioncall: exp args optspace .
-
-    $default  reduce using rule 10 (functioncall)
-
-
-State 46
-
-   17 lowop: lowop LOW_OP highop .
-   19 highop: highop . HIGH_OP raiseop
-
-    HIGH_OP  shift, and go to state 34
-
-    $default  reduce using rule 17 (lowop)
-
-
-State 47
-
-   19 highop: highop HIGH_OP raiseop .
-   21 raiseop: raiseop . RAISE spaceeater
-
-    RAISE  shift, and go to state 35
-
-    $default  reduce using rule 19 (highop)
-
-
-State 48
-
-   21 raiseop: raiseop RAISE spaceeater .
-
-    $default  reduce using rule 21 (raiseop)
-
-
-State 49
-
-    7 stat: IF exp THEN block . ENDD optspace
-
-    ENDD  shift, and go to state 58
-
-
-State 50
-
-    6 stat: FOR BLANK NAME optspace . EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
-
-    EQUALS  shift, and go to state 59
-
-
-State 51
-
-   26 anything: LEFT_PARA exp RIGHT_PARA .
-
-    $default  reduce using rule 26 (anything)
-
-
-State 52
-
-   30 tableconstr: LCURL explist RCURL .
-
-    $default  reduce using rule 30 (tableconstr)
-
-
-State 53
-
-   14 explist: explist COMMA . exp
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    exp         go to state 60
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
-
-
-State 54
-
-   35 var: var DOT NAME .
-
-    $default  reduce using rule 35 (var)
-
-
-State 55
-
-   22 spaceeater: optspace . anything optspace
-   31 args: optspace LEFT_PARA optspace . RIGHT_PARA
-
-    NAME        shift, and go to state 20
-    NUMERIC     shift, and go to state 21
-    LEFT_PARA   shift, and go to state 22
-    RIGHT_PARA  shift, and go to state 61
-    LCURL       shift, and go to state 23
-    STRING      shift, and go to state 24
-    TRUE        shift, and go to state 25
-    FALSE       shift, and go to state 26
-
-    anything     go to state 27
-    tableconstr  go to state 28
-    var          go to state 29
-
-
-State 56
-
-   14 explist: explist . COMMA exp
-   33 args: optspace LEFT_PARA explist . RIGHT_PARA
-
-    RIGHT_PARA  shift, and go to state 62
-    COMMA       shift, and go to state 53
-
-
-State 57
-
-    8 assign: exp optspace EQUALS optspace . explist
-    9       | exp optspace EQUALS optspace . functioncall
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    functioncall  go to state 63
-    optspace      go to state 11
-    explist       go to state 64
-    exp           go to state 65
-    lowop         go to state 13
-    highop        go to state 14
-    raiseop       go to state 15
-    spaceeater    go to state 16
-
-
-State 58
-
-    7 stat: IF exp THEN block ENDD . optspace
-
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
+    $default  reduce using rule 17 (optspace)
 
     optspace  go to state 66
 
 
-State 59
+State 35
 
-    6 stat: FOR BLANK NAME optspace EQUALS . optspace exp optspace COMMA exp DO block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 67
-
-
-State 60
-
-   14 explist: explist COMMA exp .
-
-    $default  reduce using rule 14 (explist)
-
-
-State 61
-
-   31 args: optspace LEFT_PARA optspace RIGHT_PARA .
-
-    $default  reduce using rule 31 (args)
-
-
-State 62
-
-   33 args: optspace LEFT_PARA explist RIGHT_PARA .
-
-    $default  reduce using rule 33 (args)
-
-
-State 63
-
-    9 assign: exp optspace EQUALS optspace functioncall .
-
-    $default  reduce using rule 9 (assign)
-
-
-State 64
-
-    8 assign: exp optspace EQUALS optspace explist .
-   14 explist: explist . COMMA exp
-
-    COMMA  shift, and go to state 53
-
-    $default  reduce using rule 8 (assign)
-
-
-State 65
-
-   10 functioncall: exp . args optspace
-   13 explist: exp .
-
-    BLANK   shift, and go to state 1
-    STRING  shift, and go to state 30
-
-    BLANK      [reduce using rule 13 (explist)]
-    LEFT_PARA  reduce using rule 11 (optspace)
-    LEFT_PARA  [reduce using rule 13 (explist)]
-    STRING     [reduce using rule 13 (explist)]
-    $default   reduce using rule 13 (explist)
-
-    optspace  go to state 68
-    args      go to state 32
-
-
-State 66
-
-    7 stat: IF exp THEN block ENDD optspace .
-
-    $default  reduce using rule 7 (stat)
-
-
-State 67
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace . exp optspace COMMA exp DO block ENDD optspace
+   14 else: ELSE . block
 
     BLANK  shift, and go to state 1
 
-    $default  reduce using rule 11 (optspace)
+    $default  reduce using rule 17 (optspace)
 
-    optspace    go to state 11
-    exp         go to state 69
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
-
-
-State 68
-
-   31 args: optspace . LEFT_PARA optspace RIGHT_PARA
-   33     | optspace . LEFT_PARA explist RIGHT_PARA
-
-    LEFT_PARA  shift, and go to state 43
-
-
-State 69
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp . optspace COMMA exp DO block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 70
-
-
-State 70
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace . COMMA exp DO block ENDD optspace
-
-    COMMA  shift, and go to state 71
-
-
-State 71
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA . exp DO block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    $default  reduce using rule 11 (optspace)
-
-    optspace    go to state 11
-    exp         go to state 72
-    lowop       go to state 13
-    highop      go to state 14
-    raiseop     go to state 15
-    spaceeater  go to state 16
-
-
-State 72
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp . DO block ENDD optspace
-
-    DO  shift, and go to state 73
-
-
-State 73
-
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO . block ENDD optspace
-
-    BLANK  shift, and go to state 1
-
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    block     go to state 74
+    block     go to state 67
     chunk     go to state 3
     optspace  go to state 4
 
 
+State 36
+
+   11 stat: if else . ENDD optspace
+
+    ENDD  shift, and go to state 68
+
+
+State 37
+
+   39 args: STRING .
+
+    $default  reduce using rule 39 (args)
+
+
+State 38
+
+   38 args: optspace . LEFT_PARA optspace RIGHT_PARA
+   40     | optspace . LEFT_PARA explist RIGHT_PARA
+
+    LEFT_PARA  shift, and go to state 69
+
+
+State 39
+
+   16 functioncall: prefixexp args . optspace
+
+    BLANK  shift, and go to state 1
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 70
+
+
+State 40
+
+   44 varlist: varlist COMMA . optspace var optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 71
+
+
+State 41
+
+   15 assign: varlist EQUALS . optspace explist
+
+    BLANK  shift, and go to state 1
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 72
+
+
+State 42
+
+   47 var: var LHARD . exp RHARD
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 73
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 43
+
+   46 var: var DOT . NAME
+
+    NAME  shift, and go to state 74
+
+
+State 44
+
+   43 varlist: var optspace .
+
+    $default  reduce using rule 43 (varlist)
+
+
+State 45
+
+   50 funcname: NAME .
+
+    $default  reduce using rule 50 (funcname)
+
+
+State 46
+
+   12 stat: FUNCTION BLANK funcname . LEFT_PARA namelist RIGHT_PARA block ENDD optspace
+   51 funcname: funcname . DOT NAME
+
+    LEFT_PARA  shift, and go to state 75
+    DOT        shift, and go to state 76
+
+
+State 47
+
+   31 anything: NUMERIC .
+
+    $default  reduce using rule 31 (anything)
+
+
+State 48
+
+   36 anything: LOW_OP . exp
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 77
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 49
+
+   32 anything: LEFT_PARA . explist RIGHT_PARA
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    explist     go to state 78
+    exp         go to state 26
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 50
+
+   37 tableconstr: LCURL . explist RCURL
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    explist     go to state 79
+    exp         go to state 26
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 51
+
+   30 anything: STRING .
+
+    $default  reduce using rule 30 (anything)
+
+
+State 52
+
+   34 anything: TRUE .
+
+    $default  reduce using rule 34 (anything)
+
+
+State 53
+
+   35 anything: FALSE .
+
+    $default  reduce using rule 35 (anything)
+
+
+State 54
+
+   42 prefixexp: functioncall .
+
+    $default  reduce using rule 42 (prefixexp)
+
+
+State 55
+
+   28 spaceeater: optspace anything . optspace
+
+    BLANK  shift, and go to state 1
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 80
+
+
+State 56
+
+   33 anything: tableconstr .
+
+    $default  reduce using rule 33 (anything)
+
+
+State 57
+
+   16 functioncall: prefixexp . args optspace
+   29 anything: prefixexp .
+
+    BLANK   shift, and go to state 1
+    STRING  shift, and go to state 37
+
+    BLANK      [reduce using rule 29 (anything)]
+    LEFT_PARA  reduce using rule 17 (optspace)
+    $default   reduce using rule 29 (anything)
+
+    optspace  go to state 38
+    args      go to state 39
+
+
+State 58
+
+   41 prefixexp: varlist .
+   44 varlist: varlist . COMMA optspace var optspace
+
+    COMMA  shift, and go to state 40
+
+    COMMA     [reduce using rule 41 (prefixexp)]
+    $default  reduce using rule 41 (prefixexp)
+
+
+State 59
+
+   20 explist: explist COMMA . exp
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 81
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 60
+
+   23 lowop: lowop LOW_OP . highop
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    highop      go to state 82
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 61
+
+   25 highop: highop HIGH_OP . raiseop
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    raiseop     go to state 83
+    spaceeater  go to state 30
+
+
+State 62
+
+   27 raiseop: raiseop RAISE . spaceeater
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    spaceeater  go to state 84
+
+
+State 63
+
+    9 stat: REPEAT block UNTIL . exp
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 85
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 64
+
+   13 if: IF exp THEN . block
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    block     go to state 86
+    chunk     go to state 3
+    optspace  go to state 4
+
+
+State 65
+
+    8 stat: FOR BLANK NAME . optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 87
+
+
+State 66
+
+   10 stat: if ENDD optspace .
+
+    $default  reduce using rule 10 (stat)
+
+
+State 67
+
+   14 else: ELSE block .
+
+    $default  reduce using rule 14 (else)
+
+
+State 68
+
+   11 stat: if else ENDD . optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 88
+
+
+State 69
+
+   38 args: optspace LEFT_PARA . optspace RIGHT_PARA
+   40     | optspace LEFT_PARA . explist RIGHT_PARA
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 89
+    explist     go to state 90
+    exp         go to state 26
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 70
+
+   16 functioncall: prefixexp args optspace .
+
+    $default  reduce using rule 16 (functioncall)
+
+
+State 71
+
+   44 varlist: varlist COMMA optspace . var optspace
+
+    NAME  shift, and go to state 6
+
+    var  go to state 91
+
+
+State 72
+
+   15 assign: varlist EQUALS optspace . explist
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    explist     go to state 92
+    exp         go to state 26
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 73
+
+   47 var: var LHARD exp . RHARD
+
+    RHARD  shift, and go to state 93
+
+
 State 74
 
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block . ENDD optspace
+   46 var: var DOT NAME .
 
-    ENDD  shift, and go to state 75
+    $default  reduce using rule 46 (var)
 
 
 State 75
 
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD . optspace
+   12 stat: FUNCTION BLANK funcname LEFT_PARA . namelist RIGHT_PARA block ENDD optspace
 
-    BLANK  shift, and go to state 1
+    NAME  shift, and go to state 94
 
-    BLANK     [reduce using rule 11 (optspace)]
-    $default  reduce using rule 11 (optspace)
-
-    optspace  go to state 76
+    namelist  go to state 95
 
 
 State 76
 
-    6 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace .
+   51 funcname: funcname DOT . NAME
 
-    $default  reduce using rule 6 (stat)
+    NAME  shift, and go to state 96
+
+
+State 77
+
+   36 anything: LOW_OP exp .
+
+    $default  reduce using rule 36 (anything)
+
+
+State 78
+
+   20 explist: explist . COMMA exp
+   32 anything: LEFT_PARA explist . RIGHT_PARA
+
+    RIGHT_PARA  shift, and go to state 97
+    COMMA       shift, and go to state 59
+
+
+State 79
+
+   20 explist: explist . COMMA exp
+   37 tableconstr: LCURL explist . RCURL
+
+    RCURL  shift, and go to state 98
+    COMMA  shift, and go to state 59
+
+
+State 80
+
+   28 spaceeater: optspace anything optspace .
+
+    $default  reduce using rule 28 (spaceeater)
+
+
+State 81
+
+   20 explist: explist COMMA exp .
+
+    $default  reduce using rule 20 (explist)
+
+
+State 82
+
+   23 lowop: lowop LOW_OP highop .
+   25 highop: highop . HIGH_OP raiseop
+
+    HIGH_OP  shift, and go to state 61
+
+    HIGH_OP   [reduce using rule 23 (lowop)]
+    $default  reduce using rule 23 (lowop)
+
+
+State 83
+
+   25 highop: highop HIGH_OP raiseop .
+   27 raiseop: raiseop . RAISE spaceeater
+
+    RAISE  shift, and go to state 62
+
+    RAISE     [reduce using rule 25 (highop)]
+    $default  reduce using rule 25 (highop)
+
+
+State 84
+
+   27 raiseop: raiseop RAISE spaceeater .
+
+    $default  reduce using rule 27 (raiseop)
+
+
+State 85
+
+    9 stat: REPEAT block UNTIL exp .
+
+    $default  reduce using rule 9 (stat)
+
+
+State 86
+
+   13 if: IF exp THEN block .
+
+    $default  reduce using rule 13 (if)
+
+
+State 87
+
+    8 stat: FOR BLANK NAME optspace . EQUALS optspace exp optspace COMMA exp DO block ENDD optspace
+
+    EQUALS  shift, and go to state 99
+
+
+State 88
+
+   11 stat: if else ENDD optspace .
+
+    $default  reduce using rule 11 (stat)
+
+
+State 89
+
+   28 spaceeater: optspace . anything optspace
+   38 args: optspace LEFT_PARA optspace . RIGHT_PARA
+
+    NAME        shift, and go to state 6
+    NUMERIC     shift, and go to state 47
+    LOW_OP      shift, and go to state 48
+    LEFT_PARA   shift, and go to state 49
+    RIGHT_PARA  shift, and go to state 100
+    LCURL       shift, and go to state 50
+    STRING      shift, and go to state 51
+    TRUE        shift, and go to state 52
+    FALSE       shift, and go to state 53
+
+    functioncall  go to state 54
+    anything      go to state 55
+    tableconstr   go to state 56
+    prefixexp     go to state 57
+    varlist       go to state 58
+    var           go to state 19
+
+
+State 90
+
+   20 explist: explist . COMMA exp
+   40 args: optspace LEFT_PARA explist . RIGHT_PARA
+
+    RIGHT_PARA  shift, and go to state 101
+    COMMA       shift, and go to state 59
+
+
+State 91
+
+   44 varlist: varlist COMMA optspace var . optspace
+   46 var: var . DOT NAME
+   47    | var . LHARD exp RHARD
+
+    BLANK  shift, and go to state 1
+    LHARD  shift, and go to state 42
+    DOT    shift, and go to state 43
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 102
+
+
+State 92
+
+   15 assign: varlist EQUALS optspace explist .
+   20 explist: explist . COMMA exp
+
+    COMMA  shift, and go to state 59
+
+    $default  reduce using rule 15 (assign)
+
+
+State 93
+
+   47 var: var LHARD exp RHARD .
+
+    $default  reduce using rule 47 (var)
+
+
+State 94
+
+   48 namelist: NAME .
+
+    $default  reduce using rule 48 (namelist)
+
+
+State 95
+
+   12 stat: FUNCTION BLANK funcname LEFT_PARA namelist . RIGHT_PARA block ENDD optspace
+   49 namelist: namelist . optspace COMMA optspace NAME
+
+    BLANK       shift, and go to state 1
+    RIGHT_PARA  shift, and go to state 103
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 104
+
+
+State 96
+
+   51 funcname: funcname DOT NAME .
+
+    $default  reduce using rule 51 (funcname)
+
+
+State 97
+
+   32 anything: LEFT_PARA explist RIGHT_PARA .
+
+    $default  reduce using rule 32 (anything)
+
+
+State 98
+
+   37 tableconstr: LCURL explist RCURL .
+
+    $default  reduce using rule 37 (tableconstr)
+
+
+State 99
+
+    8 stat: FOR BLANK NAME optspace EQUALS . optspace exp optspace COMMA exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    BLANK     [reduce using rule 17 (optspace)]
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 105
+
+
+State 100
+
+   38 args: optspace LEFT_PARA optspace RIGHT_PARA .
+
+    $default  reduce using rule 38 (args)
+
+
+State 101
+
+   40 args: optspace LEFT_PARA explist RIGHT_PARA .
+
+    $default  reduce using rule 40 (args)
+
+
+State 102
+
+   44 varlist: varlist COMMA optspace var optspace .
+
+    $default  reduce using rule 44 (varlist)
+
+
+State 103
+
+   12 stat: FUNCTION BLANK funcname LEFT_PARA namelist RIGHT_PARA . block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    block     go to state 106
+    chunk     go to state 3
+    optspace  go to state 4
+
+
+State 104
+
+   49 namelist: namelist optspace . COMMA optspace NAME
+
+    COMMA  shift, and go to state 107
+
+
+State 105
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace . exp optspace COMMA exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 108
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 106
+
+   12 stat: FUNCTION BLANK funcname LEFT_PARA namelist RIGHT_PARA block . ENDD optspace
+
+    ENDD  shift, and go to state 109
+
+
+State 107
+
+   49 namelist: namelist optspace COMMA . optspace NAME
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 110
+
+
+State 108
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp . optspace COMMA exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 111
+
+
+State 109
+
+   12 stat: FUNCTION BLANK funcname LEFT_PARA namelist RIGHT_PARA block ENDD . optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 112
+
+
+State 110
+
+   49 namelist: namelist optspace COMMA optspace . NAME
+
+    NAME  shift, and go to state 113
+
+
+State 111
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace . COMMA exp DO block ENDD optspace
+
+    COMMA  shift, and go to state 114
+
+
+State 112
+
+   12 stat: FUNCTION BLANK funcname LEFT_PARA namelist RIGHT_PARA block ENDD optspace .
+
+    $default  reduce using rule 12 (stat)
+
+
+State 113
+
+   49 namelist: namelist optspace COMMA optspace NAME .
+
+    $default  reduce using rule 49 (namelist)
+
+
+State 114
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA . exp DO block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace    go to state 24
+    exp         go to state 115
+    lowop       go to state 27
+    highop      go to state 28
+    raiseop     go to state 29
+    spaceeater  go to state 30
+
+
+State 115
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp . DO block ENDD optspace
+
+    DO  shift, and go to state 116
+
+
+State 116
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO . block ENDD optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    block     go to state 117
+    chunk     go to state 3
+    optspace  go to state 4
+
+
+State 117
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block . ENDD optspace
+
+    ENDD  shift, and go to state 118
+
+
+State 118
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD . optspace
+
+    BLANK  shift, and go to state 1
+
+    $default  reduce using rule 17 (optspace)
+
+    optspace  go to state 119
+
+
+State 119
+
+    8 stat: FOR BLANK NAME optspace EQUALS optspace exp optspace COMMA exp DO block ENDD optspace .
+
+    $default  reduce using rule 8 (stat)
