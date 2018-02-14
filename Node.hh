@@ -81,7 +81,7 @@ public:
 			returnValue = std::stof(it->value);
 		else if (it->tag == "varlist")
 			returnValue = std::stof(env->vars[it->children.front().value]);
-		else 
+		else if (it->tag == "OP") 
 			returnValue = exec_num_op((*it), env);
 		std::advance(it,1);
 		while (it != op.children.end())
@@ -92,7 +92,7 @@ public:
 					returnValue *= std::stof(it->value);
 				else if (it->tag == "varlist")
 					returnValue *= std::stof(env->vars[it->children.front().value]);
-				else 
+				else if (it->tag == "OP") 
 					returnValue *= exec_num_op((*it), env);
 			}
 			if (op.value == "/")
@@ -101,7 +101,7 @@ public:
 					returnValue /= std::stof(it->value);
 				else if (it->tag == "varlist")
 					returnValue /= std::stof(env->vars[it->children.front().value]);
-				else 
+				else if (it->tag == "OP") 
 					returnValue /= exec_num_op((*it),env);
 			}
 			if (op.value == "+")
@@ -110,7 +110,7 @@ public:
 					returnValue += std::stof(it->value);
 				else if (it->tag == "varlist")
 					returnValue += std::stof(env->vars[it->children.front().value]);
-				else 
+				else if (it->tag == "OP") 
 					returnValue += exec_num_op((*it), env);
 			}
 			if (op.value == "-")
@@ -119,7 +119,7 @@ public:
 					returnValue -= std::stof(it->value);
 				else if (it->tag == "varlist")
 					returnValue -= std::stof(env->vars[it->children.front().value]);
-				else 
+				else if (it->tag == "OP") 
 					returnValue -= exec_num_op((*it), env);
 			}
 			if (op.value == "^")
@@ -127,7 +127,7 @@ public:
 					returnValue = pow(returnValue,std::stof(it->value));
 				else if (it->tag == "varlist")
 					returnValue = pow(returnValue,std::stof(env->vars[it->children.front().value]));
-				else
+				else if (it->tag == "OP") 
 					returnValue = pow(returnValue,exec_num_op((*it), env));
 					
 			std::advance(it,1);

@@ -16,7 +16,11 @@ int main(int argc, char **argv)
 	yy::parser parser;
     if(!parser.parse()){
 		Environment *env = new Environment();
-		root.walk(env);
+		try
+		{
+			root.walk(env);
+		}
+		catch(const std::exception& e) {}
 		freopen("parse.txt","w",stdout);
 		std::cout << "digraph {" << std::endl;
 		root.dump_visual();
