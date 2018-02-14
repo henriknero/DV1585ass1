@@ -1,7 +1,7 @@
 parser: lex.yy.c interpreter.tab.o main.cc
-	g++ -g -oint interpreter.tab.o lex.yy.c main.cc
+	g++ -std=c++11 -g -oint interpreter.tab.o lex.yy.c main.cc
 interpreter.tab.o: interpreter.tab.cc
-	g++ -g -c interpreter.tab.cc
+	g++ -std=c++11 -g -c interpreter.tab.cc
 interpreter.tab.cc: interpreter.yy
 	bison -v --report-file=report.txt  interpreter.yy
 lex.yy.c: interpreter.ll interpreter.tab.cc

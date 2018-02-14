@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <math.h>
 #include "Environment.hh"
 class Node {
 public:
@@ -36,10 +37,6 @@ public:
 			{
 				(*i).execute(env);	
 			}
-		if (tag == "funccall")
-		{
-			
-		}
 	}
 	void execute(Environment *env)
 	{
@@ -48,23 +45,94 @@ public:
 			std::string funcname = children.front().children.front().value;
 			Node args = children.back();
 			if (funcname == "print")
-				exec_print(args);
+				exec_print(args, env);
+		}
+		if (tag == "assign")
+		{
+			std::string varname = children.front().children.front().value;
+			std::string value = std::to_string(exec_num_op(children.back(), env));
+			env->vars[varname] = value;
 		}
 	}
-	void exec_print(Node args)
+	void exec_print(Node args, Environment *env)
 	{
 		if(args.tag == "String")
 			std::cout << args.value << std::endl;
 		else if (args.tag == "emptypara")
 			std::cout << std::endl;
-		else if(args.children.front().tag == "explist")
+		else if(args.children.front().tag == "OP")
 		{
-			explist = args.children.front()
-			for (auto i; explist.children.begin(); i != explist.children.end();i++)
+			std::cout << exec_num_op(args.children.front(), env) << std::endl;
+		}
+		else if(args.children.front().tag == "varlist")
+		{
+			Node varlist = args.children.front();
+			for (auto i = varlist.children.begin(); i != varlist.children.end();i++)
 			{
-				
+			std::cout << env->vars[i->value] << std::endl;
 			}
 		}
+	}
+	float exec_num_op(Node op, Environment *env)
+	{
+		float returnValue;
+		std::list<Node>::iterator it = op.children.begin();
+		if (it->tag == "Number")
+			returnValue = std::stof(it->value);
+		else if (it->tag == "varlist")
+			returnValue = std::stof(env->vars[it->children.front().value]);
+		else 
+			returnValue = exec_num_op((*it), env);
+		std::advance(it,1);
+		while (it != op.children.end())
+		{
+			if (op.value == "*")
+			{
+				if (it->tag == "Number")
+					returnValue *= std::stof(it->value);
+				else if (it->tag == "varlist")
+					returnValue *= std::stof(env->vars[it->children.front().value]);
+				else 
+					returnValue *= exec_num_op((*it), env);
+			}
+			if (op.value == "/")
+			{
+				if (it->tag == "Number")
+					returnValue /= std::stof(it->value);
+				else if (it->tag == "varlist")
+					returnValue /= std::stof(env->vars[it->children.front().value]);
+				else 
+					returnValue /= exec_num_op((*it),env);
+			}
+			if (op.value == "+")
+			{
+				if (it->tag == "Number")
+					returnValue += std::stof(it->value);
+				else if (it->tag == "varlist")
+					returnValue += std::stof(env->vars[it->children.front().value]);
+				else 
+					returnValue += exec_num_op((*it), env);
+			}
+			if (op.value == "-")
+			{
+				if (it->tag == "Number")
+					returnValue -= std::stof(it->value);
+				else if (it->tag == "varlist")
+					returnValue -= std::stof(env->vars[it->children.front().value]);
+				else 
+					returnValue -= exec_num_op((*it), env);
+			}
+			if (op.value == "^")
+				if (it->tag == "Number")
+					returnValue = pow(returnValue,std::stof(it->value));
+				else if (it->tag == "varlist")
+					returnValue = pow(returnValue,std::stof(env->vars[it->children.front().value]));
+				else
+					returnValue = pow(returnValue,exec_num_op((*it), env));
+					
+			std::advance(it,1);
+		}
+		return returnValue;
 	}
 
 };
